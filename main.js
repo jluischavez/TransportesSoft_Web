@@ -53,10 +53,13 @@ function verificarSesion() {
 
     if (token && usuario) {
         mostrarSesionActiva(usuario);
+    } else {
+         document.getElementById("mainGrid").classList.add("auth-only");
     }
 }
 
 function mostrarSesionActiva(nombreUsuario) {
+    document.getElementById("mainGrid").classList.remove("auth-only");
     document.getElementById("formLogin").style.display = "none";
     document.getElementById("infoUsuario").style.display = "block";
     document.getElementById("txtBienvenido").textContent = `👤 ${nombreUsuario}`;
@@ -65,8 +68,23 @@ function mostrarSesionActiva(nombreUsuario) {
     verificarEmpresa();
 }
 
+// mostrar registro
+document.getElementById("btnMostrarRegistro").addEventListener("click", () => {
+    document.getElementById("formLogin").style.display = "none";
+    document.getElementById("formRegistro").style.display = "block";
+    document.getElementById("mensajeLogin").textContent = "";
+});
+
+// mostrar login
+document.getElementById("btnMostrarLogin").addEventListener("click", () => {
+    document.getElementById("formRegistro").style.display = "none";
+    document.getElementById("formLogin").style.display = "block";
+    document.getElementById("mensajeRegistro").textContent = "";
+});
+
 
 function mostrarFormLogin() {
+    document.getElementById("mainGrid").classList.add("auth-only");
     document.getElementById("formLogin").style.display = "block";
     document.getElementById("infoUsuario").style.display = "none";
     document.getElementById("mensajeLogin").textContent = "";
@@ -119,41 +137,6 @@ document.getElementById("btnRegistro").addEventListener("click", async () => {
     }
 });
 
-/* OBTENER CATALOGO DE CLIENTES */
-document.getElementById("btnGetCatalogoClientes").addEventListener("click", async () => {
-    const token = localStorage.getItem("token");
-
-    if (!token){
-        alert("Debes iniciar sesión primero");
-        return;
-    }
-
-    try {
-         const response = await fetch("https://localhost:7169/ContClientesCat", {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        });
-
-         if (response.status === 401) {
-            alert("Sesión expirada, vuelve a iniciar sesión.");
-            return;
-        }
-
-        const clientes = await response.json();
-        const lista = document.getElementById("ListaCatalogoClientes");
-
-        lista.innerHTML = "";
-
-        clientes.forEach(cliente => {
-            const li = document.createElement("li");
-            li.textContent = `${cliente.id_Client} | ${cliente.nombre} | ${cliente.telefono} | ${cliente.estatus}`;
-            lista.appendChild(li);
-        });
-    } catch (error){
-        console.log("Error", error);
-    }
-})
 
 // CARGAR EMPRESAS EN EL SELECT
 async function cargarEmpresas() {

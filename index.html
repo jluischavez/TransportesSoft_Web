@@ -1,87 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-    
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
-    
+    <title>TransportesSoft</title>
 </head>
-
 
 <body>
 
     <!-- NAV -->
-<nav id="navbar" style="display:none">
-    <div id="navUsuario"></div>
-    <button id="btnLogout">Cerrar sesión</button>
-</nav>
+    <nav id="navbar" style="display:none">
+        <div id="navUsuario"></div>
+        <button id="btnLogout">Cerrar sesión</button>
+    </nav>
 
-<div class="container">
+    <div class="container">
 
-    <h1>Mini Proyecto Fullstack</h1>
 
-    <div class="grid">
 
-        <section id="seccionEmpresa" style="display:none">
-            <h2>Empresa</h2>
-
-            <p id="txtSinEmpresa">No tienes una empresa asignada.</p>
-
-            <select id="selectEmpresa">
-                <option value="">-- Selecciona una empresa --</option>
-            </select>
-
-            <input type="password" id="txtClaveEmpresa" placeholder="Clave de acceso">
-            <button id="btnAsignarEmpresa">Confirmar</button>
-
-            <p id="mensajeEmpresa"></p>
-        </section>
-
-        <section>
-            <h2>Login</h2>
-
-            <div id="formLogin">
-                <input type="text" id="txtUsuario" placeholder="Usuario">
-                <input type="password" id="txtPassword" placeholder="Contraseña">
-                <button id="btnLogin">Iniciar sesión</button>
-                <p id="mensajeLogin"></p>
+            <div class="header-row">
+                <h1>Transportes<span class="accent">Soft</span></h1>
+                <div class="header-badges">
+                    <span class="badge badge-green">● Sistema activo</span>
+                    <span class="badge badge-orange">v1.0</span>
+                    <span class="badge badge-blue">API conectada</span>
+                </div>
             </div>
 
-            <div id="infoUsuario" style="display:none">
-                <p id="txtBienvenido"></p>
-            </div>
-        </section>
-
-        <section>
-            <h2>Registro</h2>
-
-            <input type="text" id="txtUsuarioReg" placeholder="Usuario">
-            <input type="password" id="txtPasswordReg" placeholder="Contraseña">
-            <button id="btnRegistro">Registrarse</button>
-
-            <p id="mensajeRegistro"></p>
-        </section>
-
-        <section>
-            <h2>Obtener catálogo de clientes</h2>
-            <button id="btnGetCatalogoClientes">Obtener catálogo</button>
-            <ul id="ListaCatalogoClientes"></ul>
-        </section>
+            <div class="grid auth-only" id="mainGrid">
         
-        <section id="seccionReporteClientes" style="display:none">
-            <h2>Reporte de Clientes</h2>
-            <p>Genera un PDF con el catálogo de clientes de tu empresa.</p>
-            <button id="btnGenerarReporte">Descargar PDF</button>
-        </section>
+                    <!-- LOGIN -->
+                <section id="seccionAuth">
+                    <h2>Acceso</h2>
+
+                    <div id="formLogin">
+                        <input type="text" id="txtUsuario" placeholder="Usuario">
+                        <input type="password" id="txtPassword" placeholder="Contraseña">
+                        <button id="btnLogin">Iniciar sesión</button>
+                        <p id="mensajeLogin"></p>
+                        <p>¿No tienes cuenta? <span id="btnMostrarRegistro">Regístrate</span></p>
+                    </div>
+
+                    <div id="formRegistro" style="display:none">
+                        <input type="text" id="txtUsuarioReg" placeholder="Usuario">
+                        <input type="password" id="txtPasswordReg" placeholder="Contraseña">
+                        <button id="btnRegistro">Registrarse</button>
+                        <p id="mensajeRegistro"></p>
+                        <p>¿Ya tienes cuenta? <span id="btnMostrarLogin">Inicia sesión</span></p>
+                    </div>
+
+                    <div id="infoUsuario" style="display:none">
+                        <p id="txtBienvenido"></p>
+                    </div>
+                </section>
+
+                <!-- EMPRESA -->
+                <section id="seccionEmpresa" style="display:none">
+                    <h2>Empresa</h2>
+                    <p id="txtSinEmpresa">No tienes una empresa asignada.</p>
+                    <select id="selectEmpresa">
+                        <option value="">-- Selecciona una empresa --</option>
+                    </select>
+                    <input type="password" id="txtClaveEmpresa" placeholder="Clave de acceso">
+                    <button id="btnAsignarEmpresa">Confirmar</button>
+                    <p id="mensajeEmpresa"></p>
+                </section>
+
+                <!-- REPORTE -->
+                <section id="seccionReporteClientes" style="display:none">
+                    <h2>Reporte de Clientes</h2>
+                    <p>Genera un PDF con el catálogo de clientes de tu empresa.</p>
+                    <button id="btnGenerarReporte">Descargar PDF</button>
+                </section>
+
+            </div>
+
+            
     </div>
 
-</div>
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-<script src="main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
