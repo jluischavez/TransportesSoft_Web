@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="CSS/mantenimientos.css">
+    <title>TransportesSoft — Mantenimientos</title>
+    
+</head>
+<body>
+
+    <nav id="navbar">
+        <div id="navUsuario"></div>
+        <button id="btnLogout" class="btn-back">✕ Cerrar sesión</button>
+    </nav>
+
+    <div class="container">
+
+        <div class="page-header">
+            <div class="page-title">
+                Transportes<span>Soft</span>
+            </div>
+            <a href="index.html" class="btn-back">← Inicio</a>
+        </div>
+
+        <div class="mant-layout">
+
+            <!-- TABLA -->
+            <div class="tabla-panel">
+                <div class="tabla-header">
+                    <h2>Mantenimientos</h2>
+                    <span class="tabla-count" id="contadorMant">Cargando...</span>
+                </div>
+                <div class="tabla-wrapper">
+                    <div class="loading" id="loadingTabla">Consultando registros...</div>
+                    <table id="tablaMant" style="display:none">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Fecha</th>
+                                <th>Unidad/Remolque</th>
+                                <th>Proveedor</th>
+                                <th>KM</th>
+                                <th>Costo Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyMant"></tbody>
+                    </table>
+                    <div class="empty-state" id="emptyState" style="display:none">
+                        Sin registros. Crea el primer mantenimiento →
+                    </div>
+                </div>
+            </div>
+
+            <!-- FORM -->
+            <div class="form-panel">
+
+                <div class="form-id-row">
+                    <span class="form-id-label">ID</span>
+                    <span class="form-id-value" id="displayId">—</span>
+                    <span class="form-mode nuevo" id="modoLabel">NUEVO</span>
+                </div>
+
+                <!-- TIPO: UNIDAD O REMOLQUE -->
+                <div class="form-group">
+                    <label class="form-label">Tipo de mantenimiento</label>
+                    <div class="radio-group">
+                        <button class="radio-btn active" id="btnTipoUnidad" onclick="setTipo('unidad')">Unidad</button>
+                        <button class="radio-btn" id="btnTipoRemolque" onclick="setTipo('remolque')">Remolque</button>
+                    </div>
+                </div>
+
+                <div class="form-group form-row-2">
+                    <div id="groupUnidad">
+                        <label class="form-label">Unidad</label>
+                        <select id="selectUnidad">
+                            <option value="">— Selecciona —</option>
+                        </select>
+                    </div>
+                    <div id="groupRemolque" style="opacity:.4; pointer-events:none">
+                        <label class="form-label">Remolque</label>
+                        <select id="selectRemolque">
+                            <option value="">— Selecciona —</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group form-row-2">
+                    <div>
+                        <label class="form-label">Fecha Mantenimiento</label>
+                        <input type="date" id="fechaMant">
+                    </div>
+                    <div>
+                        <label class="form-label">Kilometraje</label>
+                        <input type="text" id="kilometraje" placeholder="0">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Proveedor</label>
+                    <input type="text" id="proveedor" placeholder="Nombre del proveedor">
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- DETALLE -->
+                <div class="detalle-section">
+                    <div class="detalle-header">
+                        <span class="detalle-title">Refacciones / Servicios</span>
+                        <button class="btn-add-renglon" id="btnAddRenglon">+ Agregar</button>
+                    </div>
+
+                    <!-- Form agregar renglon -->
+                    <div class="renglon-form" id="renglonForm">
+                        <div class="renglon-form-grid">
+                            <input type="text" id="inputRefaccion" placeholder="Refacción o servicio" style="margin-bottom:6px">
+                            <input type="text" id="inputPrecio" placeholder="Precio" style="margin-bottom:6px">
+                        </div>
+                        <input type="text" id="inputComentarios" placeholder="Comentarios (opcional)" style="margin-bottom:6px">
+                        <button class="btn-confirm-renglon" id="btnConfirmRenglon">✓ Agregar renglón</button>
+                    </div>
+
+                    <!-- Lista renglones -->
+                    <div class="renglones-lista" id="renglonesLista">
+                        <div class="renglones-empty" id="renglonesEmpty">Sin renglones agregados</div>
+                    </div>
+                </div>
+
+                <div class="costo-total-row">
+                    <span class="costo-total-label">Costo Total</span>
+                    <span class="costo-total-value" id="costoTotalDisplay">$0.00</span>
+                </div>
+
+                <div class="msg-error" id="msgError"></div>
+
+                <button class="btn-guardar" id="btnGuardar">✓ Guardar mantenimiento</button>
+                <button class="btn-eliminar" id="btnEliminar">✕ Eliminar mantenimiento</button>
+                <button class="btn-nuevo" id="btnNuevo">+ Nuevo</button>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="JS/mantenimientos.js"></script>
+</body>
+</html>

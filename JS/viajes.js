@@ -86,6 +86,7 @@
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td class="td-id">${v.id_Viaje}</td>
+                <td class="td-idTransporte">${v.numeroTransporte}</td>
                 <td>${formatFecha(v.fechaViaje)}</td>
                 <td>${v.nombreCliente}</td>
                 <td>${v.origen}</td>
