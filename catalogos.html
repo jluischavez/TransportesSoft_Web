@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="CSS/catalogos.css">
+    <title>TransportesSoft — Catálogos</title>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav id="navbar">
+        <div id="navUsuario"></div>
+        <button id="btnLogout" class="btn-back">✕ Cerrar sesión</button>
+    </nav>
+
+    <div class="catalogos-wrapper">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <button class="sidebar-toggle btn-secondary" id="sidebarToggle" title="Colapsar menú">
+                <span class="toggle-icon">◀</span>
+            </button>
+
+            <div class="sidebar-logo">
+                <span class="logo-icon">⬡</span>
+                <span class="logo-text">Catálogos</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <button class="nav-item" data-modulo="clientes" onclick="cargarModulo('clientes', this)">
+                    <span class="nav-icon">👥</span>
+                    <span class="nav-text">Clientes</span>
+                </button>
+
+                <button class="nav-item" data-modulo="operadores" onclick="cargarModulo('operadores', this)">
+                    <span class="nav-icon">🧑‍✈️</span>
+                    <span class="nav-text">Operadores</span>
+                </button>
+
+                <button class="nav-item" data-modulo="unidades" onclick="cargarModulo('unidades', this)">
+                    <span class="nav-icon">🚛</span>
+                    <span class="nav-text">Unidades</span>
+                </button>
+
+                <button class="nav-item" data-modulo="remolques" onclick="cargarModulo('remolques', this)">
+                    <span class="nav-icon">🚧</span>
+                    <span class="nav-text">Remolques</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="index.html" class="nav-item">
+                    <span class="nav-icon">⬅</span>
+                    <span class="nav-text">Inicio</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="catalogos-main" id="catalogosMain">
+
+            <div class="main-header">
+                <div class="main-title" id="mainTitle">Catálogos</div>
+                <div class="main-subtitle" id="mainSubtitle">Selecciona una opción del menú lateral</div>
+            </div>
+
+            <!-- <div class="catalogos-empty-home" id="catalogosEmptyHome">
+                <div class="empty-home-icon">⬡</div>
+                <div class="empty-home-title">Selecciona un catálogo</div>
+                <div class="empty-home-text">
+                    Elige Clientes, Operadores, Unidades o Remolques desde el menú lateral.
+                </div>
+            </div> -->
+
+            <div class="catalogo-layout" id="catalogoLayout" style="display:none">
+
+                <!-- TABLA -->
+                <div class="tabla-panel">
+                    <div class="tabla-header">
+                        <h2 id="tablaTitle">Clientes</h2>
+                        <span class="tabla-count" id="tablaCount">Cargando...</span>
+                    </div>
+                    <div class="tabla-wrapper">
+                        <div class="loading" id="loadingTabla">Consultando registros...</div>
+                        <table id="tablaRegistros" style="display:none">
+                            <thead id="tablaHead"></thead>
+                            <tbody id="tablaBody"></tbody>
+                        </table>
+                        <div class="empty-state" id="emptyState" style="display:none">
+                            Sin registros. Crea el primero →
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FORM -->
+                <div class="form-panel" id="formPanel">
+                    <div class="form-id-row">
+                        <span class="form-id-label">ID</span>
+                        <span class="form-id-value" id="displayId">—</span>
+                        <span class="form-mode nuevo" id="modoLabel">NUEVO</span>
+                    </div>
+
+                    <div id="formCampos"></div>
+
+                    <div class="msg-error" id="msgError"></div>
+
+                    <button class="btn-guardar" id="btnGuardar">✓ Guardar</button>
+                    <button class="btn-eliminar" id="btnEliminar">✕ Eliminar</button>
+                    <button class="btn-nuevo" id="btnNuevo">+ Nuevo</button>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="JS/catalogos/clientes.js"></script>
+    <script src="JS/catalogos/operadores.js"></script>
+    <script src="JS/catalogos/unidades.js"></script>
+    <script src="JS/catalogos/remolques.js"></script>
+    <script src="JS/catalogos/catalogos.js"></script>
+</body>
+</html>

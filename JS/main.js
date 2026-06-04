@@ -323,3 +323,16 @@ document.getElementById("btnGenerarReporte").addEventListener("click", async () 
         console.error("Error:", error);
     }
 });
+
+document.getElementById('btnContabilidad').addEventListener('click', (e) => {
+    e.stopPropagation();
+    const menu = document.getElementById('menuContabilidad');
+    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+});
+
+document.addEventListener('click', (e) => {
+    const menu = document.getElementById('menuContabilidad');
+    if (menu.style.display === 'block' && !menu.contains(e.target)) {
+        menu.style.display = 'none';
+    }
+});

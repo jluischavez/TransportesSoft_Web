@@ -12,9 +12,26 @@
 
     <!-- NAV -->
     <nav id="navbar" style="display:none">
-        <div id="navUsuario"></div>
-        <button id="btnLogout">Cerrar sesión</button>
-    </nav>
+    <div id="navUsuario"></div>
+
+    <div class="nav-links" id="navLinks">
+
+        <div class="nav-dropdown">
+            <button class="nav-link-btn" id="btnContabilidad">
+                Contabilidad ▾
+            </button>
+            <div class="nav-dropdown-menu" id="menuContabilidad" style="display:none">
+                <a href="viajes.html" class="nav-dropdown-item">🚛 Viajes</a>
+                <a href="mantenimientos.html" class="nav-dropdown-item">🔧 Mantenimientos</a>
+            </div>
+        </div>
+
+        <a href="catalogos.html" class="nav-link-btn">Catálogos</a>
+
+    </div>
+
+    <button id="btnLogout">Cerrar sesión</button>
+</nav>
 
     <div class="container">
 
