@@ -242,89 +242,89 @@ function actualizarNav() {
 }
 
 
-document.getElementById("btnGenerarReporte").addEventListener("click", async () => {
-    const token = localStorage.getItem("token");
+// document.getElementById("btnGenerarReporte").addEventListener("click", async () => {
+//     const token = localStorage.getItem("token");
 
-    try {
-        const response = await fetch("https://transportessoftwebapi.azurewebsites.net/ContClientesCat", {
-            headers: { "Authorization": `Bearer ${token}` }
-        });
+//     try {
+//         const response = await fetch("https://transportessoftwebapi.azurewebsites.net/ContClientesCat", {
+//             headers: { "Authorization": `Bearer ${token}` }
+//         });
 
-        if (response.status === 401) {
-            alert("Sesión expirada.");
-            return;
-        }
+//         if (response.status === 401) {
+//             alert("Sesión expirada.");
+//             return;
+//         }
 
-        const clientes = await response.json();
+//         const clientes = await response.json();
 
-        // datos empresa
-        const empresa = localStorage.getItem("empresaNombre");
-        // const rfc = localStorage.getItem("empresaRFC");
-        const telefono = localStorage.getItem("empresaTelefono");
-        const fecha = new Date().toLocaleDateString("es-MX", {
-            year: "numeric", month: "long", day: "numeric"
-        });
+//         // datos empresa
+//         const empresa = localStorage.getItem("empresaNombre");
+//         // const rfc = localStorage.getItem("empresaRFC");
+//         const telefono = localStorage.getItem("empresaTelefono");
+//         const fecha = new Date().toLocaleDateString("es-MX", {
+//             year: "numeric", month: "long", day: "numeric"
+//         });
 
-        // crear PDF
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
+//         // crear PDF
+//         const { jsPDF } = window.jspdf;
+//         const doc = new jsPDF();
 
-        // header empresa
-        doc.setFontSize(16);
-        doc.setTextColor(0, 229, 160);
-        doc.text(empresa, 14, 20);
+//         // header empresa
+//         doc.setFontSize(16);
+//         doc.setTextColor(0, 229, 160);
+//         doc.text(empresa, 14, 20);
 
-        doc.setFontSize(9);
-        doc.setTextColor(150, 150, 150);
-        // doc.text(`RFC: ${rfc}`, 14, 28);
-        doc.text(`Tel: ${telefono}`, 14, 34);
-        doc.text(`Fecha: ${fecha}`, 14, 40);
+//         doc.setFontSize(9);
+//         doc.setTextColor(150, 150, 150);
+//         // doc.text(`RFC: ${rfc}`, 14, 28);
+//         doc.text(`Tel: ${telefono}`, 14, 34);
+//         doc.text(`Fecha: ${fecha}`, 14, 40);
 
-        // línea separadora
-        doc.setDrawColor(30, 37, 53);
-        doc.line(14, 44, 196, 44);
+//         // línea separadora
+//         doc.setDrawColor(30, 37, 53);
+//         doc.line(14, 44, 196, 44);
 
-        // título reporte
-        doc.setFontSize(11);
-        doc.setTextColor(30, 30, 30);
-        doc.text("Catálogo de Clientes", 14, 52);
+//         // título reporte
+//         doc.setFontSize(11);
+//         doc.setTextColor(30, 30, 30);
+//         doc.text("Catálogo de Clientes", 14, 52);
 
-        // tabla
-        doc.autoTable({
-            startY: 57,
-            head: [["ID", "Nombre", "Dirección", "Teléfono", "Estatus"]],
-            body: clientes.map(c => [
-                c.id_Client,
-                c.nombre,
-                c.direccion ?? "-",
-                c.telefono ?? "-",
-                c.estatus ?? "-"
-            ]),
-            styles: {
-                font: "helvetica",
-                fontSize: 8,
-                textColor: [232, 234, 242],
-                fillColor: [17, 21, 32],
-            },
-            headStyles: {
-                fillColor: [0, 50, 40],
-                textColor: [0, 229, 160],
-                fontStyle: "bold"
-            },
-            alternateRowStyles: {
-                fillColor: [20, 25, 38]
-            },
-            tableLineColor: [30, 37, 53],
-            tableLineWidth: 0.1
-        });
+//         // tabla
+//         doc.autoTable({
+//             startY: 57,
+//             head: [["ID", "Nombre", "Dirección", "Teléfono", "Estatus"]],
+//             body: clientes.map(c => [
+//                 c.id_Client,
+//                 c.nombre,
+//                 c.direccion ?? "-",
+//                 c.telefono ?? "-",
+//                 c.estatus ?? "-"
+//             ]),
+//             styles: {
+//                 font: "helvetica",
+//                 fontSize: 8,
+//                 textColor: [232, 234, 242],
+//                 fillColor: [17, 21, 32],
+//             },
+//             headStyles: {
+//                 fillColor: [0, 50, 40],
+//                 textColor: [0, 229, 160],
+//                 fontStyle: "bold"
+//             },
+//             alternateRowStyles: {
+//                 fillColor: [20, 25, 38]
+//             },
+//             tableLineColor: [30, 37, 53],
+//             tableLineWidth: 0.1
+//         });
 
-        // descargar
-        doc.save(`Clientes_${empresa}_${fecha}.pdf`);
+//         // descargar
+//         doc.save(`Clientes_${empresa}_${fecha}.pdf`);
 
-    } catch (error) {
-        console.error("Error:", error);
-    }
-});
+//     } catch (error) {
+//         console.error("Error:", error);
+//     }
+// });
 
 document.getElementById('btnContabilidad').addEventListener('click', (e) => {
     e.stopPropagation();
