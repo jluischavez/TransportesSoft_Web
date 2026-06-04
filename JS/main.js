@@ -164,15 +164,17 @@ async function cargarEmpresas() {
 function verificarEmpresa() {
     const empresaNombre = localStorage.getItem("empresaNombre");
     const seccion = document.getElementById("seccionEmpresa");
-    const seccionReporte = document.getElementById("seccionReporteClientes");
+    // const seccionReporte = document.getElementById("seccionReporteClientes");
 
     if (!empresaNombre) {
         seccion.style.display = "block";
-        seccionReporte.style.display = "none";
+        // const seccionReporte = document.getElementById("seccionReporteClientes");
+        // seccionReporte.style.display = "none";
         cargarEmpresas();
     } else {
         seccion.style.display = "none";
-        seccionReporte.style.display = "block"; // <- aquí se hace visible
+        // const seccionReporte = document.getElementById("seccionReporteClientes");
+        // seccionReporte.style.display = "block"; // <- aquí se hace visible
     }
 }
 
