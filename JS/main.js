@@ -15,7 +15,7 @@ document.getElementById("btnLogin").addEventListener("click", async () => {
     }
 
     try {
-        const response = await fetch("https://localhost:7169/UsuariosCat/login", {
+        const response = await fetch("https://transportessoftwebapi.azurewebsites.netUsuariosCat/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ nombreUsuario: usuario, contrasena: password })
@@ -115,7 +115,7 @@ document.getElementById("btnRegistro").addEventListener("click", async () => {
     }
 
     try {
-        const response = await fetch("https://localhost:7169/UsuariosCat/registro", {
+        const response = await fetch("https://transportessoftwebapi.azurewebsites.net/UsuariosCat/registro", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -140,7 +140,7 @@ document.getElementById("btnRegistro").addEventListener("click", async () => {
 
 // CARGAR EMPRESAS EN EL SELECT
 async function cargarEmpresas() {
-    const response = await fetch("https://localhost:7169/EmpresasCat");
+    const response = await fetch("https://transportessoftwebapi.azurewebsites.netEmpresasCat");
 
      if (!response.ok) {
         console.error("Error al cargar empresas");
@@ -196,7 +196,7 @@ document.getElementById("btnAsignarEmpresa").addEventListener("click", async () 
     const usuarioId = localStorage.getItem("usuarioId");
 
     try {
-        const response = await fetch("https://localhost:7169/EmpresasCat/asignar", {
+        const response = await fetch("https://transportessoftwebapi.azurewebsites.net/EmpresasCat/asignar", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -244,7 +244,7 @@ document.getElementById("btnGenerarReporte").addEventListener("click", async () 
     const token = localStorage.getItem("token");
 
     try {
-        const response = await fetch("https://localhost:7169/ContClientesCat", {
+        const response = await fetch("https://transportessoftwebapi.azurewebsites.net/ContClientesCat", {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
