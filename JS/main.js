@@ -1,5 +1,4 @@
 
-
 // ejecuta al cargar
 verificarSesion();
 
@@ -28,6 +27,10 @@ document.getElementById("btnLogin").addEventListener("click", async () => {
             localStorage.setItem("nombreUsuario", data.nombreUsuario);
             localStorage.setItem("usuarioId", data.id); 
 
+            // Limpia empresa anterior por si antes entró otro usuario en el mismo navegador
+            localStorage.removeItem("empresaNombre");
+            localStorage.removeItem("empresaRFC");
+            localStorage.removeItem("empresaTelefono");
 
             if (data.empresaNombre) {
                 localStorage.setItem("empresaNombre", data.empresaNombre);
@@ -63,7 +66,7 @@ function mostrarSesionActiva(nombreUsuario) {
     document.getElementById("formLogin").style.display = "none";
     document.getElementById("infoUsuario").style.display = "block";
     document.getElementById("txtBienvenido").textContent = `👤 ${nombreUsuario}`;
-    document.getElementById("navbar").style.display = "flex";
+
     actualizarNav();
     verificarEmpresa();
 }
@@ -140,7 +143,7 @@ document.getElementById("btnRegistro").addEventListener("click", async () => {
 
 // CARGAR EMPRESAS EN EL SELECT
 async function cargarEmpresas() {
-    const response = await fetch("https://transportessoftwebapi.azurewebsites.netEmpresasCat");
+    const response = await fetch("https://transportessoftwebapi.azurewebsites.net/EmpresasCat");
 
      if (!response.ok) {
         console.error("Error al cargar empresas");
@@ -164,17 +167,15 @@ async function cargarEmpresas() {
 function verificarEmpresa() {
     const empresaNombre = localStorage.getItem("empresaNombre");
     const seccion = document.getElementById("seccionEmpresa");
-    // const seccionReporte = document.getElementById("seccionReporteClientes");
+    const navbar = document.getElementById("navbar");
 
     if (!empresaNombre) {
+        navbar.style.display = "none";
         seccion.style.display = "block";
-        // const seccionReporte = document.getElementById("seccionReporteClientes");
-        // seccionReporte.style.display = "none";
         cargarEmpresas();
     } else {
+        navbar.style.display = "flex";
         seccion.style.display = "none";
-        // const seccionReporte = document.getElementById("seccionReporteClientes");
-        // seccionReporte.style.display = "block"; // <- aquí se hace visible
     }
 }
 
@@ -211,13 +212,16 @@ document.getElementById("btnAsignarEmpresa").addEventListener("click", async () 
             })
         });
 
-        const data = response.ok ? await response.json() : null;
-
         if (response.ok) {
-            localStorage.setItem("empresaNombre", data.nombreComercial);
-            document.getElementById("seccionEmpresa").style.display = "none";
-            actualizarNav();
-            mensaje.textContent = "";
+           localStorage.removeItem("token");
+            localStorage.removeItem("nombreUsuario");
+            localStorage.removeItem("usuarioId");
+            localStorage.removeItem("empresaNombre");
+            localStorage.removeItem("empresaRFC");
+            localStorage.removeItem("empresaTelefono");
+
+            alert("Empresa asignada correctamente. Inicia sesión nuevamente.");
+            mostrarFormLogin();
         } else {
             mensaje.textContent = "Clave incorrecta o empresa inválida.";
         }
