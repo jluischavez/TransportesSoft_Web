@@ -1,5 +1,5 @@
 
-    const API = 'https://transportessoftwebapi.azurewebsites.net';
+    const API = APP_CONFIG.API_URL;
     const IVA_PCT = 16;
     const RET_PCT = 4;
 

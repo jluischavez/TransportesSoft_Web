@@ -14,7 +14,7 @@ document.getElementById("btnLogin").addEventListener("click", async () => {
     }
 
     try {
-        const response = await fetch("https://transportessoftwebapi.azurewebsites.net/UsuariosCat/login", {
+        const response = await fetch(apiUrl("/UsuariosCat/login"), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ nombreUsuario: usuario, contrasena: password })
@@ -118,7 +118,7 @@ document.getElementById("btnRegistro").addEventListener("click", async () => {
     }
 
     try {
-        const response = await fetch("https://transportessoftwebapi.azurewebsites.net/UsuariosCat/registro", {
+        const response = await fetch(apiUrl("/UsuariosCat/registro"), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -143,7 +143,7 @@ document.getElementById("btnRegistro").addEventListener("click", async () => {
 
 // CARGAR EMPRESAS EN EL SELECT
 async function cargarEmpresas() {
-    const response = await fetch("https://transportessoftwebapi.azurewebsites.net/EmpresasCat");
+    const response = await fetch(apiUrl("/EmpresasCat"));
 
      if (!response.ok) {
         console.error("Error al cargar empresas");
@@ -199,7 +199,7 @@ document.getElementById("btnAsignarEmpresa").addEventListener("click", async () 
     const usuarioId = localStorage.getItem("usuarioId");
 
     try {
-        const response = await fetch("https://transportessoftwebapi.azurewebsites.net/EmpresasCat/asignar", {
+        const response = await fetch(apiUrl("/EmpresasCat/asignar"), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -250,7 +250,7 @@ function actualizarNav() {
 //     const token = localStorage.getItem("token");
 
 //     try {
-//         const response = await fetch("https://transportessoftwebapi.azurewebsites.net/ContClientesCat", {
+//         const response = await fetch(apiUrl("/ContClientesCat"), {
 //             headers: { "Authorization": `Bearer ${token}` }
 //         });
 

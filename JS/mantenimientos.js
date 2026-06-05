@@ -1,4 +1,4 @@
-const API = 'https://localhost:7169';
+const API = APP_CONFIG.API_URL;
 
 let modoEdicion = false;
 let idMantActual = null;

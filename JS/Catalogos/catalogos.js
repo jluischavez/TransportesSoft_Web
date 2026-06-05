@@ -1,4 +1,4 @@
-const API = 'https://transportessoftwebapi.azurewebsites.net';
+const API = APP_CONFIG.API_URL;
 
 // ── AUTH ──────────────────────────────────────────────────
 function getToken() { return localStorage.getItem('token'); }
