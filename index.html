@@ -77,12 +77,40 @@
                 <section id="seccionEmpresa" style="display:none">
                     <h2>Empresa</h2>
                     <p id="txtSinEmpresa">No tienes una empresa asignada.</p>
-                    <select id="selectEmpresa">
-                        <option value="">-- Selecciona una empresa --</option>
-                    </select>
-                    <input type="password" id="txtClaveEmpresa" placeholder="Clave de acceso">
-                    <button id="btnAsignarEmpresa">Confirmar</button>
-                    <p id="mensajeEmpresa"></p>
+
+                    <div class="empresa-opciones">
+                        <button id="btnMostrarUnirseEmpresa" type="button">Unirme a empresa existente</button>
+                        <button id="btnMostrarCrearEmpresa" type="button">Crear nueva empresa</button>
+                    </div>
+
+                    <!-- UNIRSE A EMPRESA -->
+                    <div id="formUnirseEmpresa">
+                        <h3>Unirme a empresa</h3>
+
+                        <select id="selectEmpresa">
+                            <option value="">-- Selecciona una empresa --</option>
+                        </select>
+
+                        <input type="password" id="txtClaveEmpresa" placeholder="Clave de acceso">
+
+                        <button id="btnAsignarEmpresa" type="button">Confirmar</button>
+                        <p id="mensajeEmpresa"></p>
+                    </div>
+
+                    <!-- CREAR EMPRESA -->
+                    <div id="formCrearEmpresa" style="display:none">
+                        <h3>Crear empresa</h3>
+
+                        <input type="text" id="txtNombreComercialEmpresa" placeholder="Nombre comercial">
+                        <input type="text" id="txtRazonSocialEmpresa" placeholder="Razón social">
+                        <input type="text" id="txtRFCEmpresa" placeholder="RFC">
+                        <input type="email" id="txtEmailEmpresa" placeholder="Email">
+                        <input type="text" id="txtTelefonoEmpresa" placeholder="Teléfono">
+                        <input type="password" id="txtClaveNuevaEmpresa" placeholder="Clave de acceso">
+
+                        <button id="btnCrearEmpresa" type="button">Crear empresa</button>
+                        <p id="mensajeCrearEmpresa"></p>
+                    </div>
                 </section>
 
                 <!-- REPORTE -->

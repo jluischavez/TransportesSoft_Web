@@ -339,6 +339,19 @@ h2 {
   gap: 10px;
 }
 
+h3 {
+  font-family: var(--cond);
+  font-size: .90rem;
+  font-weight: 600;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 h2::before {
   content: '';
   width: 18px;
@@ -348,7 +361,7 @@ h2::before {
 }
 
 /* ─── INPUTS ─────────────────────────────────────────────── */
-input[type="text"],
+input[type="text"],[type="email"],
 input[type="password"] {
   font-family: var(--mono);
   font-size: .8rem;
