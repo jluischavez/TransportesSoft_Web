@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="CSS/style.css">
     <link rel="stylesheet" href="CSS/catalogos.css">
-    <title>TransportesSoft — Catálogos</title>
+    <title>TransportesSoft — Contabilidad de Unidades</title>
 </head>
 <body>
 
@@ -24,29 +24,23 @@
             </button>
 
             <div class="sidebar-logo">
-                <span class="logo-icon">⬡</span>
-                <span class="logo-text">Catálogos</span>
+                <span class="logo-text">Contabilidad de Unidades</span>
             </div>
 
             <nav class="sidebar-nav">
-                <button class="nav-item" data-modulo="clientes" onclick="cargarModulo('clientes', this)">
-                    <span class="nav-icon">👥</span>
-                    <span class="nav-text">Clientes</span>
-                </button>
-
-                <button class="nav-item" data-modulo="operadores" onclick="cargarModulo('operadores', this)">
-                    <span class="nav-icon">🧑‍✈️</span>
-                    <span class="nav-text">Operadores</span>
-                </button>
-
-                <button class="nav-item" data-modulo="unidades" onclick="cargarModulo('unidades', this)">
+                <button class="nav-item" data-modulo="ConsumoUnidades" onclick="cargarModulo('ConsumoUnidades', this)">
                     <span class="nav-icon">🚛</span>
-                    <span class="nav-text">Unidades</span>
+                    <span class="nav-text">Consumo de Unidades</span>
                 </button>
 
-                <button class="nav-item" data-modulo="remolques" onclick="cargarModulo('remolques', this)">
-                    <span class="nav-icon">🚧</span>
-                    <span class="nav-text">Remolques</span>
+                <button class="nav-item" data-modulo="KilometrajeUnidades" onclick="cargarModulo('KilometrajeUnidades', this)">
+                    <span class="nav-icon">📏</span>
+                    <span class="nav-text">Kilometraje de Unidades</span>
+                </button>
+
+                <button class="nav-item" data-modulo="PrecioDiesel" onclick="cargarModulo('PrecioDiesel', this)">
+                    <span class="nav-icon">⛽</span>
+                    <span class="nav-text">Precio del Diesel</span>
                 </button>
             </nav>
 
@@ -59,19 +53,19 @@
         </aside>
 
         <!-- MAIN CONTENT -->
-        <main class="catalogos-main" id="catalogosMain">
+        <main class="catalogos-main contabilidad-unidades-main" id="ContabilidadUnidadesMain">
 
             <div class="main-header">
-                <div class="main-title" id="mainTitle">Catálogos</div>
+                <div class="main-title" id="mainTitle">Contabilidad de Unidades</div>
                 <div class="main-subtitle" id="mainSubtitle">Selecciona una opción del menú lateral</div>
             </div>
 
-            <div class="catalogo-layout" id="catalogoLayout" style="display:none">
+            <div class="catalogo-layout contabilidad-unidades-layout" id="ContabilidadUnidadesLayout" style="display:none">
 
                 <!-- TABLA -->
                 <div class="tabla-panel">
                     <div class="tabla-header">
-                        <h2 id="tablaTitle">Clientes</h2>
+                        <h2 id="tablaTitle">Consumo de Unidades</h2>
                         <span class="tabla-count" id="tablaCount">Cargando...</span>
                     </div>
                     <div class="tabla-wrapper">
@@ -109,10 +103,9 @@
 
     <script src="JS/config.js"></script>
     <script src="JS/authGuard.js"></script>
-    <script src="JS/Catalogos/clientes.js"></script>
-    <script src="JS/Catalogos/operadores.js"></script>
-    <script src="JS/Catalogos/unidades.js"></script>
-    <script src="JS/Catalogos/remolques.js"></script>
-    <script src="JS/Catalogos/catalogos.js"></script>
+    <script src="JS/ContabilidadUnidades/contabilidadunidades.js"></script>
+    <script src="JS/ContabilidadUnidades/consumoUnidades.js"></script>
+    <script src="JS/ContabilidadUnidades/KilometrajeUnidades.js"></script>
+    <script src="JS/ContabilidadUnidades/precioDiesel.js"></script>
 </body>
 </html>

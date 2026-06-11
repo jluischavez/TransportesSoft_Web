@@ -30,7 +30,7 @@ function initNav() {
 // ── SIDEBAR TOGGLE ────────────────────────────────────────
 function initSidebar() {
     const sidebar = document.getElementById('sidebar');
-    const main = document.getElementById('catalogosMain');
+    const main = document.getElementById('ContabilidadUnidadesMain');
     const toggle = document.getElementById('sidebarToggle');
 
     toggle.addEventListener('click', () => {
@@ -38,29 +38,25 @@ function initSidebar() {
     });
 }
 
+
 // ── MODULO ACTIVO ─────────────────────────────────────────
 let moduloActual = null;
 
 const moduloConfig = {
-    clientes: {
-        titulo: 'Clientes',
-        subtitulo: 'CATÁLOGO DE CLIENTES',
-        modulo: () => window.ClientesModulo
+    ConsumoUnidades: {
+        titulo: 'CONSUMO DE DIESEL',
+        subtitulo: 'POR UNIDAD',
+        modulo: () => window.ConsumoUnidadesModulo
     },
-    operadores: {
-        titulo: 'Operadores',
-        subtitulo: 'CATÁLOGO DE OPERADORES',
-        modulo: () => window.OperadoresModulo
+    KilometrajeUnidades: {
+        titulo: 'KILOMETRAJE DE UNIDADES',
+        subtitulo: 'POR UNIDAD',
+        modulo: () => window.KilometrajeUnidadesModulo
     },
-    unidades: {
-        titulo: 'Unidades',
-        subtitulo: 'CATÁLOGO DE UNIDADES',
-        modulo: () => window.UnidadesModulo
-    },
-    remolques: {
-        titulo: 'Remolques',
-        subtitulo: 'CATÁLOGO DE REMOLQUES',
-        modulo: () => window.RemolquesModulo
+    PrecioDiesel: {
+        titulo: 'PRECIO DE DIESEL',
+        subtitulo: '',
+        modulo: () => window.PrecioDieselModulo
     }
 };
 
@@ -70,7 +66,7 @@ function cargarModulo(nombre, btnEl) {
         emptyHome.style.display = 'none';
     }
 
-    document.getElementById('catalogoLayout').style.display = 'grid';
+    document.getElementById('ContabilidadUnidadesLayout').style.display = 'grid';
 
     // actualizar nav items
     document.querySelectorAll('.sidebar-nav .nav-item').forEach(b => b.classList.remove('active'));
@@ -107,10 +103,11 @@ function limpiarFormGlobal() {
     document.getElementById('loadingTabla').style.display = 'block';
     document.getElementById('tablaRegistros').style.display = 'none';
     document.getElementById('emptyState').style.display = 'none';
+    document.querySelector('.tabla-panel').style.display = '';
 }
 
 // ── HELPERS GLOBALES ──────────────────────────────────────
-window.CatalogosApp = {
+window.ContabilidadUnidadesApp = {
     API,
     getToken,
     headers,
@@ -156,6 +153,19 @@ window.CatalogosApp = {
     }
 };
 
+function mostrarInicioContabilidadUnidades() {
+    moduloActual = null;
+
+    document.querySelectorAll('.sidebar-nav .nav-item').forEach(b => {
+        b.classList.remove('active');
+    });
+
+    document.getElementById('mainTitle').textContent = 'Contabilidad de Unidades';
+    document.getElementById('mainSubtitle').textContent = 'Selecciona una opción del menú lateral';
+
+    document.getElementById('ContabilidadUnidadesLayout').style.display = 'none';
+}
+
 // ── BOTONES GLOBALES ──────────────────────────────────────
 document.getElementById('btnGuardar').addEventListener('click', () => {
     if (!moduloActual) return;
@@ -178,22 +188,8 @@ document.getElementById('btnNuevo').addEventListener('click', () => {
     if (mod?.limpiar) mod.limpiar();
 });
 
-function mostrarInicioCatalogos() {
-    moduloActual = null;
-
-    document.querySelectorAll('.sidebar-nav .nav-item').forEach(b => {
-        b.classList.remove('active');
-    });
-
-    document.getElementById('mainTitle').textContent = 'Catálogos';
-    document.getElementById('mainSubtitle').textContent = 'Selecciona una opción del menú lateral';
-
-    document.getElementById('catalogoLayout').style.display = 'none';
-
-}
-
 // ── INIT ──────────────────────────────────────────────────
 verificarAuth();
 initNav();
 initSidebar();
-mostrarInicioCatalogos();
+mostrarInicioContabilidadUnidades();

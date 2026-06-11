@@ -437,6 +437,40 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     cursor: pointer;
 }
 
+input[type="text"],
+input[type="number"],
+input[type="email"],
+select,
+textarea {
+    font-family: var(--mono);
+    font-size: .78rem;
+    width: 100%;
+    background: rgba(0,0,0,.3);
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--dim);
+    border-radius: 0;
+    color: var(--text);
+    padding: 10px 12px;
+    outline: none;
+    transition: border-color .2s;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+select:focus,
+textarea:focus {
+    border-left-color: var(--accent);
+    border-color: var(--border2);
+}
+
+/* quitar flechitas del input number */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    opacity: 0.3;
+}
+
 /* ─── BOTONES ─────────────────────────────────────────────── */
 .btn-back {
     font-family: var(--mono);
@@ -540,4 +574,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .sidebar .sidebar-nav::before {
     display: none;
+}
+
+.msg-exito {
+    font-family: var(--mono);
+    font-size: .7rem;
+    color: #3dd68c;
+    margin-top: 8px;
+    min-height: 1em;
+    letter-spacing: .02em;
 }
