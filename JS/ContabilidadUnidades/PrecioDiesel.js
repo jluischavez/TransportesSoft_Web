@@ -40,7 +40,7 @@ window.PrecioDieselModulo = function() {
     }
 
     async function cargar() {
-        const res = await fetch(`${app.API}/ContPreciosDiesel/precio-actual`, { headers: app.headers() });
+        const res = await fetch(`${app.API}/ContPreciosDiesel/Precio-Actual`, { headers: app.headers() });
         if (res.status === 404) return;
         const c = await res.json();
         cargarEnForm(c);
