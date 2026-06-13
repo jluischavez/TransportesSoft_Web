@@ -136,7 +136,10 @@ async function generarReporteViajes() {
         // doc.text(`Maniobra: ${formatoMoneda(totalManiobra)}`, 165, y);
         // doc.text(`Total: ${formatoMoneda(totalGeneral)}`, 220, y);
 
-        doc.save(`Reporte_Viajes_${fechaInicio}_${fechaFin}.pdf`);
+        const pdfBlob = doc.output("blob");
+        const pdfUrl = URL.createObjectURL(pdfBlob);
+
+        window.open(pdfUrl, "_blank");
 
     } catch (error) {
         console.error(error);
