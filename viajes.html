@@ -35,34 +35,136 @@
 
         <div class="viajes-layout">
 
-            <!-- TABLA -->
-            <div class="tabla-panel">
-                <div class="tabla-header">
-                    <h2>Viajes</h2>
-                    <span class="tabla-count" id="contadorViajes">Cargando...</span>
-                </div>
-                <div class="tabla-wrapper">
-                    <div class="loading" id="loadingTabla">Consultando registros...</div>
-                    <table id="tablaViajes" style="display:none">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>ID Transporte</th>
-                                <th>Fecha</th>
-                                <th>Cliente</th>
-                                <th>Origen</th>
-                                <th>Destino</th>
-                                <th>Factura</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody id="bodyViajes"></tbody>
-                    </table>
-                    <div class="empty-state" id="emptyState" style="display:none">
-                        Sin registros. Crea el primer viaje →
-                    </div>
-                </div>
+           <!-- TABLA -->
+<div class="tabla-panel">
+
+    <div class="tabla-header">
+        <div class="tabla-header-info">
+            <h2>Viajes</h2>
+            <span class="tabla-count" id="contadorViajes">Cargando...</span>
+        </div>
+
+        <button
+            id="btnToggleReporteViajes"
+            class="btn-reporte"
+            type="button">
+            📄 Generar reporte
+        </button>
+    </div>
+
+    <!-- PANEL DE REPORTE -->
+    <div
+        id="panelReporteViajes"
+        class="reporte-filtros"
+        style="display:none">
+
+        <div class="reporte-filtros-header">
+            <div>
+                <h3>Reporte de viajes</h3>
+                <p>Selecciona el periodo que deseas consultar.</p>
             </div>
+
+            <button
+                id="btnCerrarReporteViajes"
+                class="btn-cerrar-reporte"
+                type="button"
+                aria-label="Cerrar panel de reporte">
+                ✕
+            </button>
+        </div>
+
+        <div class="reporte-filtros-grid">
+
+            <div class="form-group">
+                <label class="form-label" for="reporteTipoFecha">
+                    Tipo de fecha
+                </label>
+
+                <select id="reporteTipoFecha">
+                    <option value="FechaViaje">Fecha de viaje</option>
+                    <option value="FechaFactura">Fecha de factura</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="reporteFechaInicio">
+                    Fecha inicial
+                </label>
+
+                <input
+                    type="date"
+                    id="reporteFechaInicio">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="reporteFechaFin">
+                    Fecha final
+                </label>
+
+                <input
+                    type="date"
+                    id="reporteFechaFin">
+            </div>
+
+            <div class="reporte-boton-generar">
+                <button
+                    id="btnGenerarReporteViajes"
+                    class="btn-guardar"
+                    type="button">
+                    Generar PDF
+                </button>
+            </div>
+
+        </div>
+
+        <p
+            id="mensajeReporteViajes"
+            class="msg-error">
+        </p>
+
+    </div>
+    <!-- FIN PANEL DE REPORTE -->
+
+    <div class="tabla-wrapper">
+
+        <div
+            class="loading"
+            id="loadingTabla">
+            Consultando registros...
+        </div>
+
+        <table
+            id="tablaViajes"
+            style="display:none">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>ID Transporte</th>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Origen</th>
+                    <th>Destino</th>
+                    <th>Factura</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+
+            <tbody id="bodyViajes"></tbody>
+
+        </table>
+
+        <div
+            class="empty-state"
+            id="emptyState"
+            style="display:none">
+            Sin registros. Crea el primer viaje →
+        </div>
+
+    </div>
+
+</div>
+<!-- FIN TABLA -->
 
             <!-- FORM -->
             <div class="form-panel">
@@ -174,5 +276,12 @@
 <script src="JS/config.js"></script>
 <script src="JS/authGuard.js"></script>
 <script src="JS/viajes.js"></script>
+
+// Librerías para generación de PDF
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="JS/Reportes/reportesBase.js"></script>
+<script src="JS/Reportes/reporteViajes.js"></script>
+
 </body>
 </html>
