@@ -38,16 +38,36 @@
 
     // ── CARGAR CATÁLOGOS ──────────────────────────────────
     async function cargarCatalogos() {
-        const [clientes, operadores, municipios] = await Promise.all([
+        const [clientes, operadores, municipios, unidades] = await Promise.all([
             fetch(`${API}/ContClientesCat`, { headers: headers() }).then(r => r.json()),
             fetch(`${API}/ContOperadoresCat`, { headers: headers() }).then(r => r.json()),
-            fetch(`${API}/MunicipiosCat`, { headers: headers() }).then(r => r.json())
+            fetch(`${API}/MunicipiosCat`, { headers: headers() }).then(r => r.json()),
+            fetch(`${API}/ContUnidadesCat`, { headers: headers() }).then(r => r.json())
         ]);
 
         llenarSelect('selectCliente', clientes, 'id_Client', 'nombre', '— Selecciona cliente —');
         llenarSelect('selectOperador', operadores, 'id_Operador', 'nombre', '— Selecciona operador —');
         llenarSelect('selectOrigen', municipios, 'idMunicipio', 'nombre', '— Origen —');
         llenarSelect('selectDestino', municipios, 'idMunicipio', 'nombre', '— Destino —');
+
+        llenarSelectUnidadesReporte(unidades);
+    }
+
+    function llenarSelectUnidadesReporte(unidades) {
+        const sel = document.getElementById('reporteUnidad');
+
+        if (!sel) return;
+
+        sel.innerHTML = '<option value="">TODAS</option>';
+
+        unidades.forEach(u => {
+            const opt = document.createElement('option');
+
+            opt.value = u.id_Unidad;
+            opt.textContent = `${u.id_Unidad} — ${u.marca ?? ''} | ${u.serie ?? ''}`;
+
+            sel.appendChild(opt);
+        });
     }
 
     function llenarSelect(id, lista, valKey, txtKey, placeholder) {

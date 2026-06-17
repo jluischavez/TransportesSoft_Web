@@ -12,6 +12,7 @@ async function generarReporteViajes() {
     const tipoFecha = document.getElementById("reporteTipoFecha").value;
     const fechaInicio = document.getElementById("reporteFechaInicio").value;
     const fechaFin = document.getElementById("reporteFechaFin").value;
+    const idUnidad = document.getElementById("reporteUnidad").value;
 
     if (!fechaInicio || !fechaFin) {
         mensaje.textContent = "Selecciona fecha inicio y fecha fin.";
@@ -19,10 +20,18 @@ async function generarReporteViajes() {
     }
 
     try {
-        const res = await fetch(apiUrl(`/ContViajes/reporte?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}&tipoFecha=${tipoFecha}`), {
-            headers: {
-                "Authorization": `Bearer ${localStorage.getItem("token")}`
-            }
+        const params = new URLSearchParams();
+
+        params.append("fechaInicio", fechaInicio);
+        params.append("fechaFin", fechaFin);
+        params.append("tipoFecha", tipoFecha);
+
+        if (idUnidad) {
+            params.append("idUnidad", idUnidad);
+        }
+
+        const res = await fetch(`${API}/ContViajes/reporte?${params.toString()}`, {
+            headers: headers()
         });
 
         if (!res.ok) {
@@ -128,13 +137,6 @@ async function generarReporteViajes() {
         });
 
         const y = doc.lastAutoTable.finalY + 10;
-
-        // doc.setFontSize(9);
-        // doc.text(`Monto: ${formatoMoneda(totalMonto)}`, 14, y);
-        // doc.text(`IVA: ${formatoMoneda(totalIva)}`, 65, y);
-        // doc.text(`Retenciones: ${formatoMoneda(totalRet)}`, 105, y);
-        // doc.text(`Maniobra: ${formatoMoneda(totalManiobra)}`, 165, y);
-        // doc.text(`Total: ${formatoMoneda(totalGeneral)}`, 220, y);
 
         const pdfBlob = doc.output("blob");
         const pdfUrl = URL.createObjectURL(pdfBlob);
