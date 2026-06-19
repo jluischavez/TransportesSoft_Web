@@ -36,9 +36,100 @@
 
             <!-- TABLA -->
             <div class="tabla-panel">
+
+
+
+
+                <div class="tabla-header">
+                    <div class="tabla-header-info">
+                        <h2>Mantenimientos</h2>
+                        <span class="tabla-count" id="contadorMant">Cargando...</span>
+                    </div>
+
+                    <button
+                        id="btnToggleReporteMantenimientos"
+                        class="btn-reporte"
+                        type="button">
+                        📄 Generar reporte
+                    </button>
+                </div>
+
+                <div
+                    id="panelReporteMantenimientos"
+                    class="reporte-filtros"
+                    style="display:none">
+
+                    <div class="reporte-filtros-header">
+                        <div>
+                            <h3>Reporte de mantenimientos</h3>
+                            <p>Selecciona el periodo y el equipo.</p>
+                        </div>
+
+                        <button
+                            id="btnCerrarReporteMantenimientos"
+                            class="btn-cerrar-reporte"
+                            type="button"
+                            aria-label="Cerrar panel de reporte">
+                            ✕
+                        </button>
+                    </div>
+
+                    <div class="reporte-filtros-grid">
+
+                        <div class="form-group">
+                            <label class="form-label" for="reporteMantenimientoEquipo">
+                                Equipo
+                            </label>
+
+                            <select id="reporteMantenimientoEquipo">
+                                <option value="">TODOS</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="reporteMantenimientoFechaInicio">
+                                Fecha inicial
+                            </label>
+
+                            <input
+                                type="date"
+                                id="reporteMantenimientoFechaInicio">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="reporteMantenimientoFechaFin">
+                                Fecha final
+                            </label>
+
+                            <input
+                                type="date"
+                                id="reporteMantenimientoFechaFin">
+                        </div>
+
+
+                            <button
+                                id="btnGenerarReporteMantenimientos"
+                                class="btn-guardar"
+                                type="button">
+                                Generar PDF
+                            </button>
+
+                    </div>
+
+                    <p
+                        id="mensajeReporteMantenimientos"
+                        class="msg-error">
+                    </p>
+
+                </div>
+
+
+
+
+
+
                 <div class="tabla-header">
                     <h2>Mantenimientos</h2>
-                    <span class="tabla-count" id="contadorMant">Cargando...</span>
                 </div>
                 <div class="tabla-wrapper">
                     <div class="loading" id="loadingTabla">Consultando registros...</div>
@@ -150,8 +241,17 @@
         </div>
     </div>
 
-    <script src="JS/config.js"></script>
-    <script src="JS/authGuard.js"></script>
-    <script src="JS/mantenimientos.js"></script>
+<script src="JS/config.js"></script>
+<script src="JS/authGuard.js"></script>
+
+<!-- Librerías para generación de PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+<script src="JS/mantenimientos.js"></script>
+<script src="JS/Reportes/reportesBase.js"></script>
+<script src="JS/Reportes/reporteMantenimientos.js"></script>
+
+    
 </body>
 </html>

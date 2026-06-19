@@ -64,8 +64,40 @@ async function cargarCatalogos() {
         fetch(`${API}/ContRemolquesCat`, { headers: headers() }).then(r => r.json())
     ]);
 
+    llenarSelectEquiposReporteMantenimientos(unidades, remolques);
+
     llenarSelect('selectUnidad', unidades, 'id_Unidad', u => `${u.marca} — ${u.serie}`);
     llenarSelect('selectRemolque', remolques, 'id_Remolque', r => `${r.marca} ${r.modelo} — ${r.placas}`);
+}
+
+function llenarSelectEquiposReporteMantenimientos(unidades, remolques) {
+    const sel = document.getElementById('reporteMantenimientoEquipo');
+
+    if (!sel) return;
+
+    sel.innerHTML = '<option value="">TODOS</option>';
+
+    unidades.forEach(u => {
+        const opt = document.createElement('option');
+
+        opt.value = `unidad:${u.id_Unidad}`;
+
+        opt.textContent =
+            `UNIDAD — ${u.id_Unidad} — ${u.marca ?? u.Marca ?? ''} | ${u.serie ?? u.Serie ?? ''}`;
+
+        sel.appendChild(opt);
+    });
+
+    remolques.forEach(r => {
+    const opt = document.createElement('option');
+
+    opt.value = `remolque:${r.id_Remolque}`;
+
+    opt.textContent =
+        `REMOLQUE — ${r.id_Remolque} — ${r.marca ?? r.Marca ?? ''} | ${r.modelo ?? r.Modelo ?? ''}`;
+
+    sel.appendChild(opt);
+    });
 }
 
 function llenarSelect(id, lista, valKey, labelFn) {
@@ -347,7 +379,7 @@ function limpiarForm() {
     document.getElementById('modoLabel').textContent = 'NUEVO';
     document.getElementById('modoLabel').className = 'form-mode nuevo';
 
-    const hoy = new Date().toISOString().substring(0,10);
+    const hoy = fechaLocalInputDate();
     document.getElementById('fechaMant').value = hoy;
     document.getElementById('kilometraje').value = '';
     document.getElementById('proveedor').value = '';
@@ -365,6 +397,14 @@ function limpiarForm() {
     renderRenglones();
 
     document.querySelectorAll('#bodyMant tr').forEach(r => r.classList.remove('selected'));
+}
+
+function fechaLocalInputDate(fecha = new Date()) {
+    const year = fecha.getFullYear();
+    const month = String(fecha.getMonth() + 1).padStart(2, "0");
+    const day = String(fecha.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
 }
 
 // ── EVENTOS ───────────────────────────────────────────────
