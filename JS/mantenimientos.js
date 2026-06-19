@@ -41,6 +41,7 @@ function setTipo(tipo) {
 
     const groupU = document.getElementById('groupUnidad');
     const groupR = document.getElementById('groupRemolque');
+    const inputKilometraje = document.getElementById('kilometraje');
 
     if (tipo === 'unidad') {
         groupU.style.opacity = '1';
@@ -48,12 +49,21 @@ function setTipo(tipo) {
         groupR.style.opacity = '.4';
         groupR.style.pointerEvents = 'none';
         document.getElementById('selectRemolque').value = '';
+        inputKilometraje.disabled = false;
+        inputKilometraje.readOnly = false;
+
+        if (inputKilometraje.value === '0') {
+            inputKilometraje.value = '';
+        }
     } else {
         groupR.style.opacity = '1';
         groupR.style.pointerEvents = 'auto';
         groupU.style.opacity = '.4';
         groupU.style.pointerEvents = 'none';
         document.getElementById('selectUnidad').value = '';
+        inputKilometraje.value = '0';
+        inputKilometraje.disabled = true;
+        inputKilometraje.readOnly = true;
     }
 }
 
@@ -292,9 +302,20 @@ async function guardarMantenimiento() {
     const proveedor = document.getElementById('proveedor').value.trim().toUpperCase();
     const costoTotal = renglones.reduce((sum, r) => sum + Number(r.precio), 0);
 
+    const kilometrajeCapturado = parseInt(document.getElementById('kilometraje').value) || 0;
+
+    if (tipoActual === 'unidad' && kilometrajeCapturado <= 0) {
+        msg.textContent = 'El kilometraje debe ser mayor a 0.';
+        return;
+    }
+
     const cab = {
         fechaMantenimiento: document.getElementById('fechaMant').value,
-        kilometraje: parseInt(document.getElementById('kilometraje').value) || 0,
+
+        kilometraje: tipoActual === 'remolque'
+        ? 0
+        : parseInt(document.getElementById('kilometraje').value) || 0,
+
         proveedor,
         costoTotal,
         id_Unidad: tipoActual === 'unidad' ? parseInt(document.getElementById('selectUnidad').value) : 0,
