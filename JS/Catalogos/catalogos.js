@@ -102,7 +102,7 @@ function limpiarFormGlobal() {
     document.getElementById('modoLabel').textContent = 'NUEVO';
     document.getElementById('modoLabel').className = 'form-mode nuevo';
     document.getElementById('msgError').textContent = '';
-    document.getElementById('btnEliminar').classList.remove('visible');
+    // document.getElementById('btnEliminar').classList.remove('visible');
     document.getElementById('tablaCount').textContent = 'Cargando...';
     document.getElementById('loadingTabla').style.display = 'block';
     document.getElementById('tablaRegistros').style.display = 'none';
@@ -118,13 +118,13 @@ window.CatalogosApp = {
         document.getElementById('displayId').textContent = id;
         document.getElementById('modoLabel').textContent = 'EDICIÓN';
         document.getElementById('modoLabel').className = 'form-mode edicion';
-        document.getElementById('btnEliminar').classList.add('visible');
+        // document.getElementById('btnEliminar').classList.add('visible');
     },
     setModoNuevo() {
         document.getElementById('displayId').textContent = '—';
         document.getElementById('modoLabel').textContent = 'NUEVO';
         document.getElementById('modoLabel').className = 'form-mode nuevo';
-        document.getElementById('btnEliminar').classList.remove('visible');
+        // document.getElementById('btnEliminar').classList.remove('visible');
         document.getElementById('msgError').textContent = '';
     },
     setTablaCount(n) {
@@ -164,12 +164,12 @@ document.getElementById('btnGuardar').addEventListener('click', () => {
     if (mod?.guardar) mod.guardar();
 });
 
-document.getElementById('btnEliminar').addEventListener('click', () => {
-    if (!moduloActual) return;
+// document.getElementById('btnEliminar').addEventListener('click', () => {
+//     if (!moduloActual) return;
 
-    const mod = moduloConfig[moduloActual]?.modulo()();
-    if (mod?.eliminar) mod.eliminar();
-});
+//     const mod = moduloConfig[moduloActual]?.modulo()();
+//     if (mod?.eliminar) mod.eliminar();
+// });
 
 document.getElementById('btnNuevo').addEventListener('click', () => {
     if (!moduloActual) return;

@@ -34,17 +34,16 @@ window.ConsumoUnidadesModulo = function() {
             </div>
             <div class="form-group">
                 <label class="form-label">Consumo en Litros</label>
-                <input type="text" id="f_consumoLitros" placeholder="Consumo en Litros">
+                <input type="number" id="f_consumoLitros" placeholder="Consumo en Litros">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Consumo en Pesos</label>
+                <input type="number" id="f_ConsumoPesos" placeholder="Consumo en Pesos">
             </div>
             <div class="form-group">
                 <label class="form-label">Comentarios</label>
                 <input type="text" id="f_Comentarios" placeholder="Comentarios">
             </div>
-            <div class="form-group">
-                <label class="form-label">Consumo en Pesos</label>
-                <input type="text" id="f_ConsumoPesos" placeholder="Consumo en Pesos">
-            </div>
-            
         `;
     }
 
