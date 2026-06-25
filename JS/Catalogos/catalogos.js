@@ -40,6 +40,7 @@ function initSidebar() {
 
 // ── MODULO ACTIVO ─────────────────────────────────────────
 let moduloActual = null;
+let instanciaModuloActual = null;
 
 const moduloConfig = {
     clientes: {
@@ -85,12 +86,12 @@ function cargarModulo(nombre, btnEl) {
     // limpiar estado
     limpiarFormGlobal();
 
-    // cargar módulo
+   // cargar módulo
     moduloActual = nombre;
-    const mod = config.modulo()();
+    instanciaModuloActual = config.modulo()();
 
-    if (mod && typeof mod.init === 'function') {
-        mod.init();
+    if (instanciaModuloActual && typeof instanciaModuloActual.init === 'function') {
+        instanciaModuloActual.init();
     }
 }
 
@@ -158,28 +159,32 @@ window.CatalogosApp = {
 
 // ── BOTONES GLOBALES ──────────────────────────────────────
 document.getElementById('btnGuardar').addEventListener('click', () => {
-    if (!moduloActual) return;
+    if (!moduloActual || !instanciaModuloActual) return;
 
-    const mod = moduloConfig[moduloActual]?.modulo()();
-    if (mod?.guardar) mod.guardar();
+    if (instanciaModuloActual.guardar) {
+        instanciaModuloActual.guardar();
+    }
 });
 
 // document.getElementById('btnEliminar').addEventListener('click', () => {
-//     if (!moduloActual) return;
+// if (!moduloActual || !instanciaModuloActual) return;
 
-//     const mod = moduloConfig[moduloActual]?.modulo()();
-//     if (mod?.eliminar) mod.eliminar();
+//     if (instanciaModuloActual.eliminar) {
+//         instanciaModuloActual.eliminar();
+//     }
 // });
 
 document.getElementById('btnNuevo').addEventListener('click', () => {
-    if (!moduloActual) return;
+     if (!moduloActual || !instanciaModuloActual) return;
 
-    const mod = moduloConfig[moduloActual]?.modulo()();
-    if (mod?.limpiar) mod.limpiar();
+    if (instanciaModuloActual.limpiar) {
+        instanciaModuloActual.limpiar();
+    }
 });
 
 function mostrarInicioCatalogos() {
     moduloActual = null;
+    instanciaModuloActual = null;
 
     document.querySelectorAll('.sidebar-nav .nav-item').forEach(b => {
         b.classList.remove('active');
