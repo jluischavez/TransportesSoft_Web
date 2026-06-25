@@ -51,7 +51,9 @@ function mostrarFormLogin() {
     document.getElementById("infoUsuario").style.display = "none";
     document.getElementById("mensajeLogin").textContent = "";
     document.getElementById("navbar").style.display = "none";
-    document.getElementById("seccionEmpresa").style.display = "none"; //
+    document.getElementById("seccionEmpresa").style.display = "none"; 
+
+    ocultarMantenimientosInicio();
 }
 
 // CARGAR EMPRESAS EN EL SELECT
@@ -115,10 +117,209 @@ function actualizarNav() {
 
     if (empresa) {
         navUsuario.textContent = `${usuario} - ${empresa}`;
+        cargarMantenimientosInicio();
     } else {
         navUsuario.textContent = usuario;
     }
 }
+
+// ── SECTION DE MANTENIMIENTOS PENDIENTES─────────────────────────────────────────
+async function cargarMantenimientosInicio() {
+    const panel = document.getElementById("panelMantenimientosInicio");
+    const lista = document.getElementById("listaMantenimientosInicio");
+
+    if (!panel || !lista) return;
+
+    const token = localStorage.getItem("token");
+    const empresaNombre = localStorage.getItem("empresaNombre");
+
+    if (!token || !empresaNombre) {
+        ocultarMantenimientosInicio();
+        return;
+    }
+
+    panel.style.display = "block";
+    lista.innerHTML = `<div class="loading">Consultando unidades...</div>`;
+
+    limpiarContadoresMantenimientosInicio();
+
+    try {
+        const res = await fetch(apiUrl("/ContMantenimientosCab/estado-mantenimiento-unidades"), {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (!res.ok) {
+            lista.innerHTML = `
+                <div class="empty-state">
+                    No se pudo consultar el estado de mantenimientos.
+                </div>
+            `;
+            return;
+        }
+
+        const unidades = await res.json();
+
+        pintarMantenimientosInicio(unidades);
+
+    } catch (error) {
+        console.error("Error al consultar mantenimientos de inicio:", error);
+
+        lista.innerHTML = `
+            <div class="empty-state">
+                Error al consultar mantenimientos.
+            </div>
+        `;
+    }
+}
+
+function ocultarMantenimientosInicio() {
+    const panel = document.getElementById("panelMantenimientosInicio");
+    const lista = document.getElementById("listaMantenimientosInicio");
+
+    if (panel) {
+        panel.style.display = "none";
+    }
+
+    if (lista) {
+        lista.innerHTML = "";
+    }
+
+    limpiarContadoresMantenimientosInicio();
+}
+
+function pintarMantenimientosInicio(unidades) {
+    const lista = document.getElementById("listaMantenimientosInicio");
+
+    if (!lista) return;
+
+    limpiarContadoresMantenimientosInicio();
+
+    if (!unidades || unidades.length === 0) {
+        lista.innerHTML = `
+            <div class="empty-state">
+                No hay unidades registradas.
+            </div>
+        `;
+        return;
+    }
+
+    const prioridad = {
+        rojo: 1,
+        amarillo: 2,
+        gris: 3,
+        verde: 4
+    };
+
+    unidades.sort((a, b) => {
+        const prioridadA = prioridad[a.color] ?? 99;
+        const prioridadB = prioridad[b.color] ?? 99;
+
+        if (prioridadA !== prioridadB) {
+            return prioridadA - prioridadB;
+        }
+
+        const restanteA = a.kmRestantes ?? 999999999;
+        const restanteB = b.kmRestantes ?? 999999999;
+
+        return restanteA - restanteB;
+    });
+
+    actualizarContadoresMantenimientosInicio(unidades);
+
+    lista.innerHTML = "";
+
+    unidades.forEach(u => {
+        const item = document.createElement("div");
+
+        const color = u.color ?? "gris";
+
+        item.className = `mantenimiento-inicio-item mantenimiento-inicio-${color}`;
+
+        const unidadTexto = `${u.id_Unidad} — ${u.marca ?? ""} ${u.serie ? "| " + u.serie : ""}`;
+
+        const ultimoManttoKm = formatearNumeroInicio(u.ultimoMantenimientoKm);
+        const kilometrajeActual = formatearNumeroInicio(u.kilometrajeActual);
+        const kmRecorridos = formatearNumeroInicio(u.kmRecorridos);
+
+        let kmRestantesTexto = "—";
+
+        if (u.kmRestantes !== null && u.kmRestantes !== undefined) {
+            if (u.kmRestantes < 0) {
+                kmRestantesTexto = `${Math.abs(u.kmRestantes).toLocaleString("es-MX")} km vencidos`;
+            } else {
+                kmRestantesTexto = `${u.kmRestantes.toLocaleString("es-MX")} km restantes`;
+            }
+        }
+
+        item.innerHTML = `
+            <div class="mantenimiento-inicio-info">
+                <div class="mantenimiento-inicio-unidad">
+                    ${unidadTexto}
+                </div>
+
+                <div class="mantenimiento-inicio-detalle">
+                    <span>Último mantto: ${ultimoManttoKm} km</span>
+                    <span>Actual: ${kilometrajeActual} km</span>
+                    <span>Recorridos: ${kmRecorridos} km</span>
+                </div>
+            </div>
+
+            <div class="mantenimiento-inicio-estado">
+                <span>${u.estado ?? "Sin estado"}</span>
+                <strong>${kmRestantesTexto}</strong>
+            </div>
+        `;
+
+        lista.appendChild(item);
+    });
+}
+
+function actualizarContadoresMantenimientosInicio(unidades) {
+    const vencidas = unidades.filter(u => u.color === "rojo").length;
+    const proximas = unidades.filter(u => u.color === "amarillo").length;
+    const correctas = unidades.filter(u => u.color === "verde").length;
+    const sinDatos = unidades.filter(u => u.color === "gris").length;
+
+    const contadorVencidas = document.getElementById("contadorMantVencidas");
+    const contadorProximas = document.getElementById("contadorMantProximas");
+    const contadorCorrectas = document.getElementById("contadorMantCorrectas");
+    const contadorSinDatos = document.getElementById("contadorMantSinDatos");
+
+    if (contadorVencidas) contadorVencidas.textContent = vencidas;
+    if (contadorProximas) contadorProximas.textContent = proximas;
+    if (contadorCorrectas) contadorCorrectas.textContent = correctas;
+    if (contadorSinDatos) contadorSinDatos.textContent = sinDatos;
+}
+
+function limpiarContadoresMantenimientosInicio() {
+    const contadorVencidas = document.getElementById("contadorMantVencidas");
+    const contadorProximas = document.getElementById("contadorMantProximas");
+    const contadorCorrectas = document.getElementById("contadorMantCorrectas");
+    const contadorSinDatos = document.getElementById("contadorMantSinDatos");
+
+    if (contadorVencidas) contadorVencidas.textContent = "0";
+    if (contadorProximas) contadorProximas.textContent = "0";
+    if (contadorCorrectas) contadorCorrectas.textContent = "0";
+    if (contadorSinDatos) contadorSinDatos.textContent = "0";
+}
+
+function formatearNumeroInicio(valor) {
+    if (valor === null || valor === undefined) {
+        return "—";
+    }
+
+    return Number(valor).toLocaleString("es-MX");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const btnRecargar = document.getElementById("btnRecargarMantenimientosInicio");
+
+    if (btnRecargar) {
+        btnRecargar.addEventListener("click", cargarMantenimientosInicio);
+    }
+});
 
 /* BOTON LOGIN */
 document.getElementById("btnLogin").addEventListener("click", async () => {
@@ -270,90 +471,6 @@ document.getElementById("btnAsignarEmpresa").addEventListener("click", async () 
     }
 });
 
-// document.getElementById("btnGenerarReporte").addEventListener("click", async () => {
-//     const token = localStorage.getItem("token");
-
-//     try {
-//         const response = await fetch(apiUrl("/ContClientesCat"), {
-//             headers: { "Authorization": `Bearer ${token}` }
-//         });
-
-//         if (response.status === 401) {
-//             alert("Sesión expirada.");
-//             return;
-//         }
-
-//         const clientes = await response.json();
-
-//         // datos empresa
-//         const empresa = localStorage.getItem("empresaNombre");
-//         // const rfc = localStorage.getItem("empresaRFC");
-//         const telefono = localStorage.getItem("empresaTelefono");
-//         const fecha = new Date().toLocaleDateString("es-MX", {
-//             year: "numeric", month: "long", day: "numeric"
-//         });
-
-//         // crear PDF
-//         const { jsPDF } = window.jspdf;
-//         const doc = new jsPDF();
-
-//         // header empresa
-//         doc.setFontSize(16);
-//         doc.setTextColor(0, 229, 160);
-//         doc.text(empresa, 14, 20);
-
-//         doc.setFontSize(9);
-//         doc.setTextColor(150, 150, 150);
-//         // doc.text(`RFC: ${rfc}`, 14, 28);
-//         doc.text(`Tel: ${telefono}`, 14, 34);
-//         doc.text(`Fecha: ${fecha}`, 14, 40);
-
-//         // línea separadora
-//         doc.setDrawColor(30, 37, 53);
-//         doc.line(14, 44, 196, 44);
-
-//         // título reporte
-//         doc.setFontSize(11);
-//         doc.setTextColor(30, 30, 30);
-//         doc.text("Catálogo de Clientes", 14, 52);
-
-//         // tabla
-//         doc.autoTable({
-//             startY: 57,
-//             head: [["ID", "Nombre", "Dirección", "Teléfono", "Estatus"]],
-//             body: clientes.map(c => [
-//                 c.id_Client,
-//                 c.nombre,
-//                 c.direccion ?? "-",
-//                 c.telefono ?? "-",
-//                 c.estatus ?? "-"
-//             ]),
-//             styles: {
-//                 font: "helvetica",
-//                 fontSize: 8,
-//                 textColor: [232, 234, 242],
-//                 fillColor: [17, 21, 32],
-//             },
-//             headStyles: {
-//                 fillColor: [0, 50, 40],
-//                 textColor: [0, 229, 160],
-//                 fontStyle: "bold"
-//             },
-//             alternateRowStyles: {
-//                 fillColor: [20, 25, 38]
-//             },
-//             tableLineColor: [30, 37, 53],
-//             tableLineWidth: 0.1
-//         });
-
-//         // descargar
-//         doc.save(`Clientes_${empresa}_${fecha}.pdf`);
-
-//     } catch (error) {
-//         console.error("Error:", error);
-//     }
-// });
-
 document.getElementById('btnContabilidad').addEventListener('click', (e) => {
     e.stopPropagation();
     const menu = document.getElementById('menuContabilidad');
@@ -460,6 +577,8 @@ function cerrarSesionLocal() {
     localStorage.removeItem("empresaNombre");
     localStorage.removeItem("empresaRFC");
     localStorage.removeItem("empresaTelefono");
+
+    ocultarMantenimientosInicio();
 }
 
 async function obtenerErrorApi(response) {

@@ -115,6 +115,40 @@
                     </div>
                 </section>
 
+                <section id="panelMantenimientosInicio" class="inicio-card mantenimientos-inicio" style="display:none">
+                    <div class="inicio-card-header">
+                        <div>
+                            <h2>Estado de mantenimientos</h2>
+                            <p>Unidades próximas o vencidas según kilometraje.</p>
+                        </div>
+
+                        <button id="btnRecargarMantenimientosInicio" class="btn-secundario" type="button">
+                            Actualizar
+                        </button>
+                    </div>
+
+                    <div class="mantenimientos-resumen">
+                        <div class="mantenimiento-resumen-item mantenimiento-resumen-rojo">
+                            <span id="contadorMantVencidas">0</span>
+                            <small>Vencidas</small>
+                        </div>
+
+                        <div class="mantenimiento-resumen-item mantenimiento-resumen-amarillo">
+                            <span id="contadorMantProximas">0</span>
+                            <small>Próximas</small>
+                        </div>
+
+                        <div class="mantenimiento-resumen-item mantenimiento-resumen-verde">
+                            <span id="contadorMantCorrectas">0</span>
+                            <small>Correctas</small>
+                        </div>
+                    </div>
+
+                    <div id="listaMantenimientosInicio" class="mantenimientos-inicio-lista">
+                        <div class="loading">Consultando unidades...</div>
+                    </div>
+                </section>
+
                 <!-- REPORTE -->
                 <!-- <section id="seccionReporteClientes" style="display:none">
                     <h2>Reporte de Clientes</h2>
