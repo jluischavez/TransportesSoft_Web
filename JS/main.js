@@ -1,4 +1,5 @@
-// ejecuta al cargar
+inicializarControlSesion();
+inicializarExpiracionIndex();
 verificarSesion();
 
 function mostrarModoUnirseEmpresa() {
@@ -28,10 +29,16 @@ function verificarSesion() {
     const token = localStorage.getItem("token");
     const usuario = localStorage.getItem("nombreUsuario");
 
+    if (token && sesionExpirada()) {
+        cerrarSesionLocal();
+        mostrarFormLogin();
+        return;
+    }
+
     if (token && usuario) {
         mostrarSesionActiva(usuario);
     } else {
-         document.getElementById("mainGrid").classList.add("auth-only");
+        mostrarFormLogin();
     }
 }
 
@@ -48,12 +55,36 @@ function mostrarSesionActiva(nombreUsuario) {
 function mostrarFormLogin() {
     document.getElementById("mainGrid").classList.add("auth-only");
     document.getElementById("formLogin").style.display = "block";
+    document.getElementById("formRegistro").style.display = "none";
     document.getElementById("infoUsuario").style.display = "none";
     document.getElementById("mensajeLogin").textContent = "";
     document.getElementById("navbar").style.display = "none";
-    document.getElementById("seccionEmpresa").style.display = "none"; 
+    document.getElementById("seccionEmpresa").style.display = "none";
 
     ocultarMantenimientosInicio();
+}
+
+function inicializarExpiracionIndex() {
+    function revisar() {
+        const token = localStorage.getItem("token");
+
+        if (!token) return;
+
+        if (sesionExpirada()) {
+            cerrarSesionLocal();
+            mostrarFormLogin();
+        }
+    }
+
+    setInterval(revisar, 5000);
+
+    window.addEventListener("focus", revisar);
+
+    document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) {
+            revisar();
+        }
+    });
 }
 
 // CARGAR EMPRESAS EN EL SELECT
@@ -344,7 +375,8 @@ document.getElementById("btnLogin").addEventListener("click", async () => {
         if (response.ok) {
             localStorage.setItem("token", data.token);
             localStorage.setItem("nombreUsuario", data.nombreUsuario);
-            localStorage.setItem("usuarioId", data.id); 
+            localStorage.setItem("usuarioId", data.id);
+            localStorage.setItem("ultimaActividad", Date.now().toString());
 
             // Limpia empresa anterior por si antes entró otro usuario en el mismo navegador
             localStorage.removeItem("empresaNombre");
@@ -571,14 +603,11 @@ document.getElementById("btnCrearEmpresa").addEventListener("click", async () =>
 
 //HELPERS
 function cerrarSesionLocal() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("nombreUsuario");
-    localStorage.removeItem("usuarioId");
-    localStorage.removeItem("empresaNombre");
-    localStorage.removeItem("empresaRFC");
-    localStorage.removeItem("empresaTelefono");
+    limpiarSesionLocal();
 
-    ocultarMantenimientosInicio();
+    if (typeof ocultarMantenimientosInicio === "function") {
+        ocultarMantenimientosInicio();
+    }
 }
 
 async function obtenerErrorApi(response) {
