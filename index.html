@@ -5,35 +5,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="img/LogoTS.ico">
-    <link rel="stylesheet" href="CSS/style.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="CSS/style.css?v=5">
+
+
     <title>TransportesSoft</title>
 </head>
 
 <body>
 
     <!-- NAV -->
-    <nav id="navbar" style="display:none">
-    <div id="navUsuario"></div>
+    <nav id="navbar" class="ts-navbar" style="display:none">
+        <div class="ts-navbar-user" id="navUsuario"></div>
 
-    <div class="nav-links" id="navLinks">
+        <div class="ts-navbar-links" id="navLinks">
+            <div class="nav-dropdown">
+                <button class="nav-link-btn" id="btnContabilidad" type="button">
+                    Contabilidad ▾
+                </button>
 
-        <div class="nav-dropdown">
-            <button class="nav-link-btn" id="btnContabilidad">
-                Contabilidad ▾
-            </button>
-            <div class="nav-dropdown-menu" id="menuContabilidad" style="display:none">
-                <a href="viajes.html" class="nav-dropdown-item">🚛 Viajes</a>
-                <a href="mantenimientos.html" class="nav-dropdown-item">🔧 Mantenimientos</a>
+                <div class="nav-dropdown-menu" id="menuContabilidad" style="display:none">
+                    <a href="viajes.html" class="nav-dropdown-item">🚛 Viajes</a>
+                    <a href="mantenimientos.html" class="nav-dropdown-item">🔧 Mantenimientos</a>
+                </div>
             </div>
+
+            <a href="catalogos.html" class="nav-link-btn">Catálogos</a>
+            <a href="contabilidadUnidades.html" class="nav-link-btn">Contabilidad Unidades</a>
         </div>
 
-        <a href="catalogos.html" class="nav-link-btn">Catálogos</a>
-        <a href="contabilidadUnidades.html" class="nav-link-btn">Contabilidad Unidades</a>
-
-    </div>
-
-    <button id="btnLogout">Cerrar sesión</button>
-</nav>
+        <button id="btnLogout" class="btn-logout" type="button">
+            Cerrar sesión
+        </button>
+    </nav>
 
     <div class="container">
 
@@ -43,109 +48,121 @@
                 <h1>Transportes<span class="accent">Soft</span></h1>
                 <div class="header-badges">
                     <span class="badge badge-green">● Sistema activo</span>
-                    <span class="badge badge-orange">v1.0</span>
+                    <span class="badge badge-orange">v0.3</span>
                     <span class="badge badge-blue">API conectada</span>
                 </div>
             </div>
 
-            <div class="grid auth-only" id="mainGrid">
+            <div class="row g-4 auth-only align-items-stretch" id="mainGrid">
         
                     <!-- LOGIN -->
-                <section id="seccionAuth">
-                    <h2>Acceso</h2>
+                <section id="seccionAuth" class="col-12 col-lg-5">
+                    <div class="inicio-card h-100">
+                        <h2>Acceso</h2>
 
-                    <div id="formLogin">
-                        <input type="text" id="txtUsuario" placeholder="Usuario">
-                        <input type="password" id="txtPassword" placeholder="Contraseña">
-                        <button id="btnLogin">Iniciar sesión</button>
-                        <p id="mensajeLogin"></p>
-                        <p>¿No tienes cuenta? <span id="btnMostrarRegistro">Regístrate</span></p>
-                    </div>
+                        <div id="formLogin">
+                            <input type="text" id="txtUsuario" placeholder="Usuario">
+                            <input type="password" id="txtPassword" placeholder="Contraseña">
+                            <button id="btnLogin" class="btn-principal-ts" type="button">
+                                Iniciar sesión
+                            </button>
+                            <p id="mensajeLogin"></p>
+                            <p>¿No tienes cuenta? <span id="btnMostrarRegistro">Regístrate</span></p>
+                        </div>
 
-                    <div id="formRegistro" style="display:none">
-                        <input type="text" id="txtUsuarioReg" placeholder="Usuario">
-                        <input type="password" id="txtPasswordReg" placeholder="Contraseña">
-                        <button id="btnRegistro">Registrarse</button>
-                        <p id="mensajeRegistro"></p>
-                        <p>¿Ya tienes cuenta? <span id="btnMostrarLogin">Inicia sesión</span></p>
-                    </div>
+                        <div id="formRegistro" style="display:none">
+                            <input type="text" id="txtUsuarioReg" placeholder="Usuario">
+                            <input type="password" id="txtPasswordReg" placeholder="Contraseña">
+                            <button id="btnRegistro" class="btn-principal-ts" type="button">
+                                Registrarse
+                            </button>
+                            <p id="mensajeRegistro"></p>
+                            <p>¿Ya tienes cuenta? <span id="btnMostrarLogin">Inicia sesión</span></p>
+                        </div>
 
-                    <div id="infoUsuario" style="display:none">
-                        <p id="txtBienvenido"></p>
+                        <div id="infoUsuario" style="display:none">
+                            <p id="txtBienvenido"></p>
+                        </div>
                     </div>
                 </section>
 
                 <!-- EMPRESA -->
-                <section id="seccionEmpresa" style="display:none">
-                    <h2>Empresa</h2>
-                    <p id="txtSinEmpresa">No tienes una empresa asignada.</p>
+                <section id="seccionEmpresa" class="col-12 col-lg-5" style="display:none">
+                    <div class="inicio-card h-100">
+                        <h2>Empresa</h2>
+                        <p id="txtSinEmpresa">No tienes una empresa asignada.</p>
 
-                    <div class="empresa-opciones">
-                        <button id="btnMostrarUnirseEmpresa" type="button">Unirme a empresa existente</button>
-                        <button id="btnMostrarCrearEmpresa" type="button">Crear nueva empresa</button>
-                    </div>
+                        <div class="empresa-opciones">
+                            <button id="btnMostrarUnirseEmpresa" type="button">Unirme a empresa existente</button>
+                            <button id="btnMostrarCrearEmpresa" type="button">Crear nueva empresa</button>
+                        </div>
 
-                    <!-- UNIRSE A EMPRESA -->
-                    <div id="formUnirseEmpresa">
-                        <h3>Unirme a empresa</h3>
+                        <!-- UNIRSE A EMPRESA -->
+                        <div id="formUnirseEmpresa">
+                            <h3>Unirme a empresa</h3>
 
-                        <select id="selectEmpresa">
-                            <option value="">-- Selecciona una empresa --</option>
-                        </select>
+                            <select id="selectEmpresa">
+                                <option value="">-- Selecciona una empresa --</option>
+                            </select>
 
-                        <input type="password" id="txtClaveEmpresa" placeholder="Clave de acceso">
+                            <input type="password" id="txtClaveEmpresa" placeholder="Clave de acceso">
 
-                        <button id="btnAsignarEmpresa" type="button">Confirmar</button>
-                        <p id="mensajeEmpresa"></p>
-                    </div>
+                            <button id="btnAsignarEmpresa" class="btn-principal-ts" type="button">
+                                Confirmar
+                            </button>
+                            <p id="mensajeEmpresa"></p>
+                        </div>
 
-                    <!-- CREAR EMPRESA -->
-                    <div id="formCrearEmpresa" style="display:none">
-                        <h3>Crear empresa</h3>
+                        <!-- CREAR EMPRESA -->
+                        <div id="formCrearEmpresa" style="display:none">
+                            <h3>Crear empresa</h3>
 
-                        <input type="text" id="txtNombreComercialEmpresa" placeholder="Nombre comercial">
-                        <input type="text" id="txtRazonSocialEmpresa" placeholder="Razón social">
-                        <input type="text" id="txtRFCEmpresa" placeholder="RFC">
-                        <input type="email" id="txtEmailEmpresa" placeholder="Email">
-                        <input type="text" id="txtTelefonoEmpresa" placeholder="Teléfono">
-                        <input type="password" id="txtClaveNuevaEmpresa" placeholder="Clave de acceso">
+                            <input type="text" id="txtNombreComercialEmpresa" placeholder="Nombre comercial">
+                            <input type="text" id="txtRazonSocialEmpresa" placeholder="Razón social">
+                            <input type="text" id="txtRFCEmpresa" placeholder="RFC">
+                            <input type="email" id="txtEmailEmpresa" placeholder="Email">
+                            <input type="text" id="txtTelefonoEmpresa" placeholder="Teléfono">
+                            <input type="password" id="txtClaveNuevaEmpresa" placeholder="Clave de acceso">
 
-                        <button id="btnCrearEmpresa" type="button">Crear empresa</button>
-                        <p id="mensajeCrearEmpresa"></p>
+                            <button id="btnCrearEmpresa" type="button">Crear empresa</button>
+                            <p id="mensajeCrearEmpresa"></p>
+                        </div>
                     </div>
                 </section>
 
-                <section id="panelMantenimientosInicio" class="inicio-card mantenimientos-inicio" style="display:none">
-                    <div class="inicio-card-header">
-                        <div>
-                            <h2>Estado de mantenimientos</h2>
-                            <p>Unidades próximas o vencidas según kilometraje.</p>
+                <section id="panelMantenimientosInicio" class="col-12 col-lg-7" style="display:none">
+                    <div class="inicio-card mantenimientos-inicio h-100">
+                        <div class="inicio-card-header">
+                            <div>
+                                <h2>Estado de mantenimientos</h2>
+                                <p>Unidades próximas o vencidas según kilometraje.</p>
+                            </div>
+
+                            <button id="btnRecargarMantenimientosInicio" class="btn-actualizar-mant" type="button">
+                                ↻ Actualizar
+                            </button>
                         </div>
 
-                        <button id="btnRecargarMantenimientosInicio" class="btn-secundario" type="button">
-                            Actualizar
-                        </button>
-                    </div>
+                        <div class="mantenimientos-resumen">
+                            <div class="mantenimiento-resumen-item mantenimiento-resumen-rojo">
+                                <span id="contadorMantVencidas">0</span>
+                                <small>Vencidas</small>
+                            </div>
 
-                    <div class="mantenimientos-resumen">
-                        <div class="mantenimiento-resumen-item mantenimiento-resumen-rojo">
-                            <span id="contadorMantVencidas">0</span>
-                            <small>Vencidas</small>
+                            <div class="mantenimiento-resumen-item mantenimiento-resumen-amarillo">
+                                <span id="contadorMantProximas">0</span>
+                                <small>Próximas</small>
+                            </div>
+
+                            <div class="mantenimiento-resumen-item mantenimiento-resumen-verde">
+                                <span id="contadorMantCorrectas">0</span>
+                                <small>Correctas</small>
+                            </div>
                         </div>
 
-                        <div class="mantenimiento-resumen-item mantenimiento-resumen-amarillo">
-                            <span id="contadorMantProximas">0</span>
-                            <small>Próximas</small>
+                        <div id="listaMantenimientosInicio" class="mantenimientos-inicio-lista">
+                            <div class="loading">Consultando unidades...</div>
                         </div>
-
-                        <div class="mantenimiento-resumen-item mantenimiento-resumen-verde">
-                            <span id="contadorMantCorrectas">0</span>
-                            <small>Correctas</small>
-                        </div>
-                    </div>
-
-                    <div id="listaMantenimientosInicio" class="mantenimientos-inicio-lista">
-                        <div class="loading">Consultando unidades...</div>
                     </div>
                 </section>
 
@@ -156,8 +173,17 @@
 
     <script src="JS/config.js?v=4"></script>
     <script src="JS/main.js?v=4"></script>
+    <script src="JS/nav.js?v=7"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
     
 </body>
+<footer>
+    <div class="footer-content">
+        <p>© 2026 TransportesSoft. Todos los derechos reservados.</p>
+        <br>
+        <p>Desarrollado por: <a href="https://www.instagram.com/valu_soft1/" target="_blank">Valu Webs</a></p>
+    </div>
+</footer>
 </html>

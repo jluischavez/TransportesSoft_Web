@@ -21,15 +21,7 @@ function headers() {
 
 // ── NAV ───────────────────────────────────────────────────
 function initNav() {
-    const usuario = localStorage.getItem('nombreUsuario');
-    const empresa = localStorage.getItem('empresaNombre');
-    document.getElementById('navUsuario').textContent =
-        empresa ? `${usuario} — ${empresa}` : usuario;
-
-    document.getElementById('btnLogout').addEventListener('click', () => {
-        localStorage.clear();
-        window.location.href = 'index.html';
-    });
+  inicializarNavbar();
 }
 
 // ── TIPO UNIDAD / REMOLQUE ────────────────────────────────

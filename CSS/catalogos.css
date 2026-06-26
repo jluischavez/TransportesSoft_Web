@@ -169,6 +169,25 @@
     opacity: 1 !important;
     visibility: visible !important;
 }
+
+/* ─── FIX CATÁLOGOS MOBILE CON NAVBAR ───────────────────── */
+
+@media (max-width: 768px) {
+    .catalogos-wrapper {
+        padding-top: 0;
+    }
+
+    .sidebar {
+        position: relative;
+        top: auto;
+        z-index: 1;
+    }
+
+    .catalogos-main {
+        padding-top: 16px;
+    }
+}
+
 /* ─── MAIN CONTENT ────────────────────────────────────────── */
 .catalogos-main {
     flex: 1;

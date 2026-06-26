@@ -25,16 +25,8 @@
 
     // ── NAV ───────────────────────────────────────────────
     function initNav() {
-        const usuario = localStorage.getItem('nombreUsuario');
-        const empresa = localStorage.getItem('empresaNombre');
-        const nav = document.getElementById('navUsuario');
-        nav.textContent = empresa ? `${usuario} — ${empresa}` : usuario;
-
-        document.getElementById('btnLogout').addEventListener('click', () => {
-            localStorage.clear();
-            window.location.href = 'index.html';
-        });
-    }
+    inicializarNavbar();
+}
 
     // ── CARGAR CATÁLOGOS ──────────────────────────────────
     async function cargarCatalogos() {

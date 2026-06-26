@@ -11,9 +11,30 @@
 <body>
 
     <!-- NAV -->
-    <nav id="navbar">
-        <div id="navUsuario"></div>
-        <button id="btnLogout" class="btn-back">✕ Cerrar sesión</button>
+    <nav id="navbar" class="ts-navbar" style="display:none">
+        <div id="navUsuario" class="ts-navbar-user"></div>
+
+        <div class="ts-navbar-links" id="navLinks">
+            <a href="index.html" class="nav-link-btn">Inicio</a>
+
+            <div class="nav-dropdown">
+                <button class="nav-link-btn" id="btnContabilidad" type="button">
+                    Contabilidad ▾
+                </button>
+
+                <div class="nav-dropdown-menu" id="menuContabilidad" style="display:none">
+                    <a href="viajes.html" class="nav-dropdown-item">🚛 Viajes</a>
+                    <a href="mantenimientos.html" class="nav-dropdown-item">🔧 Mantenimientos</a>
+                </div>
+            </div>
+
+            <a href="catalogos.html" class="nav-link-btn">Catálogos</a>
+            <a href="contabilidadUnidades.html" class="nav-link-btn active">Contabilidad Unidades</a>
+        </div>
+
+        <button id="btnLogout" class="btn-logout" type="button">
+            Cerrar sesión
+        </button>
     </nav>
 
     <div class="catalogos-wrapper">
@@ -25,7 +46,8 @@
             </button>
 
             <div class="sidebar-logo">
-                <span class="logo-text">Contabilidad de Unidades</span>
+                <span class="logo-icon">⬡</span>
+                <span class="logo-text">Cont. de Unidades</span>
             </div>
 
             <nav class="sidebar-nav">
@@ -38,19 +60,7 @@
                     <span class="nav-icon">📏</span>
                     <span class="nav-text">Kilometraje de Unidades</span>
                 </button>
-
-                <!-- <button class="nav-item" data-modulo="PrecioDiesel" onclick="cargarModulo('PrecioDiesel', this)">
-                    <span class="nav-icon">⛽</span>
-                    <span class="nav-text">Precio del Diesel</span>
-                </button> -->
             </nav>
-
-            <div class="sidebar-footer">
-                <a href="index.html" class="nav-item">
-                    <span class="nav-icon">⬅</span>
-                    <span class="nav-text">Inicio</span>
-                </a>
-            </div>
         </aside>
 
         <!-- MAIN CONTENT -->
@@ -102,11 +112,20 @@
         </main>
     </div>
 
-    <script src="JS/config.js"></script>
-    <script src="JS/authGuard.js"></script>
-    <script src="JS/ContabilidadUnidades/contabilidadunidades.js"></script>
-    <script src="JS/ContabilidadUnidades/consumoUnidades.js"></script>
-    <script src="JS/ContabilidadUnidades/KilometrajeUnidades.js"></script>
-    <script src="JS/ContabilidadUnidades/PrecioDiesel.js"></script>
+    <script src="JS/config.js?v=8"></script>
+    <script src="JS/authGuard.js?v=8"></script>
+    <script src="JS/nav.js?v=8"></script>
+
+    <script src="JS/ContabilidadUnidades/contabilidadunidades.js?v=8"></script>
+    <script src="JS/ContabilidadUnidades/consumoUnidades.js?v=8"></script>
+    <script src="JS/ContabilidadUnidades/KilometrajeUnidades.js?v=8"></script>
+    <footer>
+        <div class="footer-content">
+            <p>© 2026 TransportesSoft. Todos los derechos reservados.</p>
+            <br>
+            <p>Desarrollado por: <a href="https://www.instagram.com/valu_soft1/" target="_blank">Valu Webs</a></p>
+        </div>
+    </footer>
 </body>
+
 </html>

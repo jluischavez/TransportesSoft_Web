@@ -11,17 +11,31 @@
 </head>
 <body>
 
-    <nav id="navbar">
-        <div id="navUsuario"></div>
+    <!-- NAV -->
+    <nav id="navbar" class="ts-navbar" style="display:none">
+        <div id="navUsuario" class="ts-navbar-user"></div>
 
-        <div class="nav-links" id="navLinks">
+        <div class="ts-navbar-links" id="navLinks">
             <a href="index.html" class="nav-link-btn">Inicio</a>
+
+            <div class="nav-dropdown">
+                <button class="nav-link-btn active" id="btnContabilidad" type="button">
+                    Contabilidad ▾
+                </button>
+
+                <div class="nav-dropdown-menu" id="menuContabilidad" style="display:none">
+                    <a href="viajes.html" class="nav-dropdown-item">🚛 Viajes</a>
+                    <a href="mantenimientos.html" class="nav-dropdown-item">🔧 Mantenimientos</a>
+                </div>
+            </div>
+
             <a href="catalogos.html" class="nav-link-btn">Catálogos</a>
-            <a href="viajes.html" class="nav-link-btn">Viajes</a>
-            <a href="mantenimientos.html" class="nav-link-btn active">Mantenimientos</a>
+            <a href="contabilidadUnidades.html" class="nav-link-btn">Contabilidad Unidades</a>
         </div>
 
-        <button id="btnLogout" class="btn-back">✕ Cerrar sesión</button>
+        <button id="btnLogout" class="btn-logout" type="button">
+            Cerrar sesión
+        </button>
     </nav>
 
     <div class="container">
@@ -30,7 +44,6 @@
             <div class="page-title">
                 Transportes<span>Soft</span>
             </div>
-            <a href="index.html" class="btn-back">← Inicio</a>
         </div>
 
         <div class="mant-layout">
@@ -122,15 +135,6 @@
                         class="msg-error">
                     </p>
 
-                </div>
-
-
-
-
-
-
-                <div class="tabla-header">
-                    <h2>Mantenimientos</h2>
                 </div>
                 <div class="tabla-wrapper">
                     <div class="loading" id="loadingTabla">Consultando registros...</div>
@@ -244,6 +248,7 @@
 
 <script src="JS/config.js"></script>
 <script src="JS/authGuard.js"></script>
+<script src="JS/nav.js?v=7"></script>
 
 <!-- Librerías para generación de PDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -253,6 +258,13 @@
 <script src="JS/Reportes/reportesBase.js"></script>
 <script src="JS/Reportes/reporteMantenimientos.js"></script>
 
-    
+    <footer>
+        <div class="footer-content">
+            <p>© 2026 TransportesSoft. Todos los derechos reservados.</p>
+            <br>
+            <p>Desarrollado por: <a href="https://www.instagram.com/valu_soft1/" target="_blank">Valu Webs</a></p>
+        </div>
+    </footer>
 </body>
+
 </html>
