@@ -82,15 +82,12 @@ function validarSesionPorTiempo() {
 function inicializarControlSesion() {
 
     ["click", "keydown", "touchstart"].forEach(evento => {
-        console.log("Control de sesión inicializado. Tiempo de expiración: " + TIEMPO_SESION_MS + " ms");
         document.addEventListener(evento, () => {
             if (!validarSesionPorTiempo()) return;
 
             registrarActividadSesion();
         });
     });
-
-    console.log("Control de sesión inicializado. Tiempo de expiración: " + TIEMPO_SESION_MS + " ms");
 
     document.addEventListener("visibilitychange", () => {
         if (!document.hidden) {

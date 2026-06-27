@@ -892,3 +892,67 @@ li:hover {
     padding: 20px;
     border-top: 1px solid rgba(255,255,255,.10);
 }
+
+
+/* ─── BOTÓN FLOTANTE WHATSAPP ───────────────────────────── */
+
+.whatsapp-float {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    z-index: 9999;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    min-height: 46px;
+    padding: 0 16px;
+
+    background: #25d366;
+    color: #06120a;
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 999px;
+
+    font-family: var(--cond);
+    font-size: .9rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    text-decoration: none;
+
+    box-shadow: 0 0 22px rgba(37,211,102,.28);
+    transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+
+.whatsapp-float:hover {
+    color: #06120a;
+    background: #2eea74;
+    transform: translateY(-2px);
+    box-shadow: 0 0 28px rgba(37,211,102,.45);
+}
+
+.whatsapp-float:active {
+    transform: translateY(0);
+}
+
+.whatsapp-float-icon {
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+.whatsapp-float-text {
+    line-height: 1;
+}
+
+/* En celular lo hacemos más compacto */
+@media (max-width: 768px) {
+    .whatsapp-float {
+        right: 14px;
+        bottom: 14px;
+        min-height: 44px;
+        padding: 0 14px;
+        font-size: .82rem;
+    }
+}
