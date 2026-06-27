@@ -43,9 +43,15 @@ function verificarSesion() {
 }
 
 function mostrarSesionActiva(nombreUsuario) {
+    ocultarLandingPublica();
+
     document.getElementById("mainGrid").classList.remove("auth-only");
+
+    document.getElementById("seccionAuth").style.display = "block";
     document.getElementById("formLogin").style.display = "none";
+    document.getElementById("formRegistro").style.display = "none";
     document.getElementById("infoUsuario").style.display = "block";
+
     document.getElementById("txtBienvenido").textContent = `👤 ${nombreUsuario}`;
 
     actualizarNav();
@@ -53,13 +59,21 @@ function mostrarSesionActiva(nombreUsuario) {
 }
 
 function mostrarFormLogin() {
+    mostrarLandingPublica();
+
     document.getElementById("mainGrid").classList.add("auth-only");
+
+    document.getElementById("seccionAuth").style.display = "block";
     document.getElementById("formLogin").style.display = "block";
     document.getElementById("formRegistro").style.display = "none";
     document.getElementById("infoUsuario").style.display = "none";
+
     document.getElementById("mensajeLogin").textContent = "";
     document.getElementById("navbar").style.display = "none";
     document.getElementById("seccionEmpresa").style.display = "none";
+
+    document.getElementById("formUnirseEmpresa").style.display = "none";
+    document.getElementById("formCrearEmpresa").style.display = "none";
 
     ocultarMantenimientosInicio();
 }
@@ -119,15 +133,20 @@ function verificarEmpresa() {
     const menuContabilidad = document.getElementById("menuContabilidad");
 
     if (!empresaNombre) {
-        navbar.style.display = "flex";
-        navLinks.style.display = "none";
-        if (menuContabilidad) {
-            menuContabilidad.style.display = "none";
-        }
-        seccion.style.display = "block";
-        mostrarModoUnirseEmpresa();
-        cargarEmpresas();
-        return;
+    navbar.style.display = "flex";
+    navLinks.style.display = "none";
+
+    if (menuContabilidad) {
+        menuContabilidad.style.display = "none";
+    }
+
+    seccion.style.display = "block";
+
+    ocultarMantenimientosInicio();
+    mostrarModoUnirseEmpresa();
+    cargarEmpresas();
+
+    return;
     }
 
     navbar.style.display = "flex";
@@ -351,6 +370,22 @@ document.addEventListener("DOMContentLoaded", () => {
         btnRecargar.addEventListener("click", cargarMantenimientosInicio);
     }
 });
+
+function mostrarLandingPublica() {
+    const landing = document.getElementById("landingPublica");
+
+    if (landing) {
+        landing.style.display = "block";
+    }
+}
+
+function ocultarLandingPublica() {
+    const landing = document.getElementById("landingPublica");
+
+    if (landing) {
+        landing.style.display = "none";
+    }
+}
 
 /* BOTON LOGIN */
 document.getElementById("btnLogin").addEventListener("click", async () => {

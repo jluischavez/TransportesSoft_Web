@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="CSS/style.css?v=5">
 
 
-    <title>TransportesSoft</title>
+    <title>TransportesSoft | Software para empresas de transporte</title>
+    <meta name="description" content="TransportesSoft es un sistema web para empresas de transporte. Controla viajes, clientes, operadores, unidades, remolques, mantenimientos y reportes desde una sola plataforma.">
 </head>
 
 <body>
@@ -53,6 +54,74 @@
                 </div>
             </div>
 
+
+            <!-- LANDING PÚBLICA -->
+            <div id="landingPublica" class="landing-publica">
+
+                <section class="landing-hero">
+                    <div class="landing-hero-text">
+                        <span class="landing-kicker">Software para transporte y flotillas</span>
+
+                        <h2>Controla tus viajes, unidades y mantenimientos desde una sola plataforma.</h2>
+
+                        <p>
+                            TransportesSoft es un sistema web diseñado para empresas transportistas que necesitan
+                            administrar clientes, operadores, unidades, remolques, viajes, mantenimientos y reportes
+                            sin depender de hojas de Excel o procesos desordenados.
+                        </p>
+
+                        <div class="landing-actions">
+                            <a href="#seccionAuth" class="landing-btn-primary">Probar sistema</a>
+                            <a href="https://wa.me/526621816151?text=Hola,%20tengo%20interés%20en%20TransportesSoft" target="_blank" class="landing-btn-secondary">
+                                Solicitar demo
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="landing-hero-card">
+                        <div class="landing-metric">
+                            <span>Viajes</span>
+                            <strong>Control operativo</strong>
+                        </div>
+
+                        <div class="landing-metric">
+                            <span>Mantenimientos</span>
+                            <strong>Alertas por kilometraje</strong>
+                        </div>
+
+                        <div class="landing-metric">
+                            <span>Reportes</span>
+                            <strong>PDF por periodo y unidad</strong>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="landing-features">
+                    <div class="landing-feature">
+                        <h3>Control de viajes</h3>
+                        <p>Registra clientes, origen, destino, operador, unidad, factura, montos y comentarios.</p>
+                    </div>
+
+                    <div class="landing-feature">
+                        <h3>Mantenimientos</h3>
+                        <p>Consulta unidades próximas o vencidas según kilometraje y mantén mejor control de tu flotilla.</p>
+                    </div>
+
+                    <div class="landing-feature">
+                        <h3>Catálogos</h3>
+                        <p>Administra clientes, operadores, unidades y remolques por empresa de forma ordenada.</p>
+                    </div>
+
+                    <div class="landing-feature">
+                        <h3>Reportes</h3>
+                        <p>Genera reportes en PDF para consultar información importante de tu operación.</p>
+                    </div>
+                </section>
+
+            </div>
+
+
+
             <div class="row g-4 auth-only align-items-stretch" id="mainGrid">
         
                     <!-- LOGIN -->
@@ -93,8 +162,12 @@
                         <p id="txtSinEmpresa">No tienes una empresa asignada.</p>
 
                         <div class="empresa-opciones">
-                            <button id="btnMostrarUnirseEmpresa" type="button">Unirme a empresa existente</button>
-                            <button id="btnMostrarCrearEmpresa" type="button">Crear nueva empresa</button>
+                            <button id="btnMostrarUnirseEmpresa" class="btn-principal-ts" type="button">
+                                Unirme a empresa existente
+                            </button>
+                            <button id="btnMostrarCrearEmpresa" class="btn-principal-ts" type="button" >
+                                Crear nueva empresa
+                            </button>
                         </div>
 
                         <!-- UNIRSE A EMPRESA -->
@@ -171,10 +244,10 @@
             
     </div>
 
-    <script src="JS/config.js?v=4"></script>
-    <script src="JS/main.js?v=4"></script>
-    <script src="JS/nav.js?v=7"></script>
-    <script src="JS/whatsappFloat.js?v=1"></script>
+    <script src="JS/config.js?v=5"></script>
+    <script src="JS/main.js?v=5"></script>
+    <!-- <script src="JS/nav.js?v=7"></script> -->
+    <script src="JS/whatsappFloat.js?v=5"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
