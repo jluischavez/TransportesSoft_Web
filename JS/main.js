@@ -392,7 +392,6 @@ document.getElementById("btnLogin").addEventListener("click", async () => {
     const usuario = document.getElementById("txtUsuario").value.trim();
     const password = document.getElementById("txtPassword").value.trim();
     const mensaje = document.getElementById("mensajeLogin");
-    const btnLogin = document.getElementById("btnLogin");
 
     mensaje.textContent = "";
 
@@ -400,10 +399,6 @@ document.getElementById("btnLogin").addEventListener("click", async () => {
         mensaje.textContent = "Completa todos los campos.";
         return;
     }
-
-    btnLogin.disabled = true;
-    btnLogin.textContent = "Ingresando...";
-    mensaje.textContent = "Validando credenciales...";
 
     try {
         const response = await fetch(apiUrl("/UsuariosCat/login"), {
@@ -439,9 +434,6 @@ document.getElementById("btnLogin").addEventListener("click", async () => {
     } catch (error) {
         mensaje.textContent = "Error al conectar con el servidor. Es probable que el servidor tenga intermitencia. Sigue intentando cada 30 segundos.";
         console.error(error);
-    } finally {
-        btnLogin.disabled = false;
-        btnLogin.textContent = "Iniciar sesión";
     }
 });
 
