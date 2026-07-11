@@ -30,19 +30,78 @@
 
     // ── CARGAR CATÁLOGOS ──────────────────────────────────
     async function cargarCatalogos() {
-        const [clientes, operadores, municipios, unidades] = await Promise.all([
+        const [clientes, operadores, unidades] = await Promise.all([
             fetch(`${API}/ContClientesCat`, { headers: headers() }).then(r => r.json()),
             fetch(`${API}/ContOperadoresCat`, { headers: headers() }).then(r => r.json()),
-            fetch(`${API}/MunicipiosCat`, { headers: headers() }).then(r => r.json()),
             fetch(`${API}/ContUnidadesCat`, { headers: headers() }).then(r => r.json())
         ]);
 
         llenarSelect('selectCliente', clientes, 'id_Client', 'nombre', '— Selecciona cliente —');
         llenarSelect('selectOperador', operadores, 'id_Operador', 'nombre', '— Selecciona operador —');
-        llenarSelect('selectOrigen', municipios, 'idMunicipio', 'nombre', '— Origen —');
-        llenarSelect('selectDestino', municipios, 'idMunicipio', 'nombre', '— Destino —');
 
         llenarSelectUnidadesReporte(unidades);
+
+        await initAutocompleteViajes();
+    }
+
+    // ── AUTOCOMPLETADO DE DIRECCIONES (Places API New) ────
+    let origenSeleccionado = null;
+    let destinoSeleccionado = null;
+
+    const BOUNDS_MEXICO = { north: 32.72, south: 14.53, west: -118.4, east: -86.7 };
+
+    async function initAutocompleteViajes() {
+        const { PlaceAutocompleteElement } = await google.maps.importLibrary('places');
+
+        crearAutocomplete(PlaceAutocompleteElement, 'origenAutocompleteContainer', (place) => {
+            origenSeleccionado = place;
+            mostrarDireccionSeleccionada('origen', place);
+        });
+
+        crearAutocomplete(PlaceAutocompleteElement, 'destinoAutocompleteContainer', (place) => {
+            destinoSeleccionado = place;
+            mostrarDireccionSeleccionada('destino', place);
+        });
+    }
+
+    function crearAutocomplete(PlaceAutocompleteElement, containerId, onSelect) {
+        const el = new PlaceAutocompleteElement({
+            locationRestriction: BOUNDS_MEXICO,
+            includedRegionCodes: ['mx']
+        });
+
+        document.getElementById(containerId).appendChild(el);
+
+        el.addEventListener('gmp-select', async ({ placePrediction }) => {
+            const place = placePrediction.toPlace();
+            await place.fetchFields({ fields: ['displayName', 'formattedAddress', 'location'] });
+            onSelect(place);
+        });
+
+        return el;
+    }
+
+    function mostrarDireccionSeleccionada(tipo, place) {
+        document.getElementById(`${tipo}TextoActual`).textContent = textoDeDireccion(place);
+    }
+
+    function textoDeDireccion(place) {
+        return place ? `${place.displayName} — ${place.formattedAddress}` : '';
+    }
+
+    // Modo edición: mostrar texto guardado en vez del autocomplete
+    function mostrarModoEdicionDireccion(tipo, textoGuardado) {
+        document.getElementById(`${tipo}TextoActual`).textContent = textoGuardado || '—';
+        document.getElementById(`${tipo}TextoActual`).style.display = 'inline-block';
+        document.getElementById(`${tipo}AutocompleteContainer`).style.display = 'none';
+        document.getElementById(`btnCambiar${tipo === 'origen' ? 'Origen' : 'Destino'}`).style.display = 'inline-block';
+    }
+
+    function activarCambioDireccion(tipo) {
+        document.getElementById(`${tipo}TextoActual`).style.display = 'none';
+        document.getElementById(`${tipo}AutocompleteContainer`).style.display = 'block';
+        document.getElementById(`btnCambiar${tipo === 'origen' ? 'Origen' : 'Destino'}`).style.display = 'none';
+        if (tipo === 'origen') origenSeleccionado = null; else destinoSeleccionado = null;
     }
 
     function llenarSelectUnidadesReporte(unidades) {
@@ -137,9 +196,9 @@
         document.getElementById('maniobra').value = Number(v.maniobra).toFixed(2);
         calcularTotal();
 
-        // Seleccionar origen/destino por nombre
-        seleccionarPorTexto('selectOrigen', v.origen);
-        seleccionarPorTexto('selectDestino', v.destino);
+        // Mostrar dirección guardada en modo edición
+        mostrarModoEdicionDireccion('origen', v.origen);
+        mostrarModoEdicionDireccion('destino', v.destino);
 
         // Cargar operador y su unidad
         document.getElementById('selectOperador').value = v.id_Operador;
@@ -221,8 +280,8 @@
         const idCliente = document.getElementById('selectCliente').value;
         const folio = document.getElementById('folioFactura').value.trim();
         const numTrans = document.getElementById('numTransporte').value.trim();
-        const origen = document.getElementById('selectOrigen').value;
-        const destino = document.getElementById('selectDestino').value;
+        const origenTexto = origenSeleccionado ? textoDeDireccion(origenSeleccionado) : document.getElementById('origenTextoActual').textContent;
+        const destinoTexto = destinoSeleccionado ? textoDeDireccion(destinoSeleccionado) : document.getElementById('destinoTextoActual').textContent;
         const monto = parseFloat(document.getElementById('monto').value) || 0;
         const total = calcularTotal();
         const idOperador = document.getElementById('selectOperador').value;
@@ -230,8 +289,8 @@
         if (!idCliente) { msg.textContent = 'Selecciona un cliente.'; return; }
         if (!folio) { msg.textContent = 'El folio de factura es requerido.'; return; }
         if (!numTrans) { msg.textContent = 'El número de transporte es requerido.'; return; }
-        if (!origen) { msg.textContent = 'Selecciona el origen.'; return; }
-        if (!destino) { msg.textContent = 'Selecciona el destino.'; return; }
+        if (!origenTexto || origenTexto === '—') { msg.textContent = 'Selecciona el origen.'; return; }
+        if (!destinoTexto || destinoTexto === '—') { msg.textContent = 'Selecciona el destino.'; return; }
         if (monto <= 0) { msg.textContent = 'El monto debe ser mayor a 0.'; return; }
         if (total <= 0) { msg.textContent = 'El total debe ser mayor a 0.'; return; }
         if (!idOperador) { msg.textContent = 'Selecciona un operador.'; return; }
@@ -251,12 +310,6 @@
         // Obtener nombre cliente
         const selCliente = document.getElementById('selectCliente');
         const nombreCliente = selCliente.options[selCliente.selectedIndex].textContent;
-
-        // Obtener origen/destino texto
-        const selOrigen = document.getElementById('selectOrigen');
-        const selDestino = document.getElementById('selectDestino');
-        const origenTexto = selOrigen.options[selOrigen.selectedIndex].textContent;
-        const destinoTexto = selDestino.options[selDestino.selectedIndex].textContent;
 
         const viaje = {
             id_Client: parseInt(idCliente),
@@ -329,8 +382,14 @@
         document.getElementById('selectCliente').value = '';
         document.getElementById('folioFactura').value = '';
         document.getElementById('numTransporte').value = '';
-        document.getElementById('selectOrigen').value = '';
-        document.getElementById('selectDestino').value = '';
+        origenSeleccionado = null;
+        destinoSeleccionado = null;
+        document.getElementById('origenTextoActual').textContent = '';
+        document.getElementById('destinoTextoActual').textContent = '';
+        document.getElementById('origenAutocompleteContainer').style.display = 'block';
+        document.getElementById('destinoAutocompleteContainer').style.display = 'block';
+        document.getElementById('btnCambiarOrigen').style.display = 'none';
+        document.getElementById('btnCambiarDestino').style.display = 'none';
         document.getElementById('selectOperador').value = '';
         document.getElementById('monto').value = '';
         document.getElementById('iva').value = '';
@@ -370,6 +429,9 @@
     document.getElementById('btnGuardar').addEventListener('click', guardarViaje);
     document.getElementById('btnEliminar').addEventListener('click', eliminarViaje);
     document.getElementById('btnNuevo').addEventListener('click', limpiarForm);
+
+    document.getElementById('btnCambiarOrigen').addEventListener('click', () => activarCambioDireccion('origen'));
+    document.getElementById('btnCambiarDestino').addEventListener('click', () => activarCambioDireccion('destino'));
 
     // ── INIT ──────────────────────────────────────────────
     verificarAuth();
