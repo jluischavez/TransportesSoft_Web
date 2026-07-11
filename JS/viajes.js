@@ -165,7 +165,7 @@
                 <td>${v.factura}</td>
                 <td class="td-monto">$${Number(v.total).toLocaleString('es-MX', {minimumFractionDigits:2})}</td>
             `;
-            tr.addEventListener('click', () => cargarViajeEnForm(v));
+            tr.addEventListener('click', () => cargarViajeEnForm(v, tr));
             tbody.appendChild(tr);
         });
     }
@@ -176,7 +176,7 @@
     }
 
     // ── CARGAR VIAJE EN FORM ──────────────────────────────
-    async function cargarViajeEnForm(v) {
+        async function cargarViajeEnForm(v, fila) {
         modoEdicion = true;
         idViajeActual = v.id_Viaje;
 
@@ -184,32 +184,56 @@
         document.getElementById('modoLabel').textContent = 'EDICIÓN';
         document.getElementById('modoLabel').className = 'form-mode edicion';
 
-        document.getElementById('fechaViaje').value = v.fechaViaje?.substring(0,10);
-        document.getElementById('fechaFactura').value = v.fechaFactura?.substring(0,10);
-        document.getElementById('selectCliente').value = v.id_Client;
-        document.getElementById('folioFactura').value = v.factura;
-        document.getElementById('numTransporte').value = v.numeroTransporte;
-        document.getElementById('comentarios').value = v.comentarios;
-        document.getElementById('monto').value = Number(v.monto).toFixed(2);
-        document.getElementById('iva').value = Number(v.iva).toFixed(2);
-        document.getElementById('retenciones').value = Number(v.retenciones).toFixed(2);
-        document.getElementById('maniobra').value = Number(v.maniobra).toFixed(2);
+        document.getElementById('fechaViaje').value =
+            v.fechaViaje ? v.fechaViaje.substring(0, 10) : '';
+
+        document.getElementById('fechaFactura').value =
+            v.fechaFactura ? v.fechaFactura.substring(0, 10) : '';
+
+        document.getElementById('selectCliente').value = v.id_Client ?? '';
+        document.getElementById('folioFactura').value = v.factura ?? '';
+        document.getElementById('numTransporte').value = v.numeroTransporte ?? '';
+        document.getElementById('comentarios').value = v.comentarios ?? '';
+
+        document.getElementById('monto').value =
+            Number(v.monto || 0).toFixed(2);
+
+        document.getElementById('iva').value =
+            Number(v.iva || 0).toFixed(2);
+
+        document.getElementById('retenciones').value =
+            Number(v.retenciones || 0).toFixed(2);
+
+        document.getElementById('maniobra').value =
+            Number(v.maniobra || 0).toFixed(2);
+
         calcularTotal();
 
-        // Mostrar dirección guardada en modo edición
+        // Mostrar las direcciones guardadas en modo edición
         mostrarModoEdicionDireccion('origen', v.origen);
         mostrarModoEdicionDireccion('destino', v.destino);
 
-        // Cargar operador y su unidad
-        document.getElementById('selectOperador').value = v.id_Operador;
+        // Limpiar selecciones temporales de Google Places
+        origenSeleccionado = null;
+        destinoSeleccionado = null;
+
+        // Cargar operador y la unidad relacionada
+        document.getElementById('selectOperador').value = v.id_Operador ?? '';
+
         await buscarUnidadPorOperador(v.id_Operador);
 
         document.getElementById('btnEliminar').classList.add('visible');
         document.getElementById('msgError').textContent = '';
 
-        // Highlight fila seleccionada
-        document.querySelectorAll('#bodyViajes tr').forEach(tr => tr.classList.remove('selected'));
-        event.currentTarget.classList.add('selected');
+        // Quitar selección de todas las filas
+        document
+            .querySelectorAll('#bodyViajes tr')
+            .forEach(tr => tr.classList.remove('selected'));
+
+        // Marcar la fila que se presionó
+        if (fila) {
+            fila.classList.add('selected');
+        }
     }
 
     function seleccionarPorTexto(selectId, texto) {
