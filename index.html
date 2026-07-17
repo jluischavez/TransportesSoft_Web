@@ -239,6 +239,134 @@
                     </div>
                 </section>
 
+                <!-- DASHBOARD -->
+                <section id="panelDashboardInicio"
+                        class="col-12"
+                        style="display:none">
+
+                    <div class="dashboard-inicio">
+
+                        <div class="dashboard-encabezado">
+                            <div>
+                                <span class="dashboard-kicker">Resumen financiero</span>
+                                <h2 id="tituloPeriodoDashboard">Dashboard del mes</h2>
+                                <p>
+                                    Ingresos por viajes menos gastos de diésel y mantenimientos.
+                                </p>
+                            </div>
+
+                            <button id="btnRecargarDashboard"
+                                    class="btn-actualizar-mant"
+                                    type="button">
+                                ↻ Actualizar
+                            </button>
+                        </div>
+
+                        <div id="mensajeDashboard" class="dashboard-mensaje"></div>
+
+                        <!-- INDICADORES GENERALES -->
+                        <div class="dashboard-indicadores">
+
+                            <article class="dashboard-indicador indicador-ingresos">
+                                <span>Ingresos del mes</span>
+                                <strong id="dashboardIngresos">$0.00</strong>
+                                <small>Importe total de viajes</small>
+                            </article>
+
+                            <article class="dashboard-indicador indicador-gastos">
+                                <span>Gastos del mes</span>
+                                <strong id="dashboardGastos">$0.00</strong>
+                                <small>
+                                    Diésel:
+                                    <b id="dashboardGastoDiesel">$0.00</b>
+                                    · Mantenimiento:
+                                    <b id="dashboardGastoMantenimiento">$0.00</b>
+                                </small>
+                            </article>
+
+                            <article class="dashboard-indicador indicador-utilidad">
+                                <span>Utilidad estimada</span>
+                                <strong id="dashboardUtilidad">$0.00</strong>
+                                <small>Ingresos menos gastos registrados</small>
+                            </article>
+
+                            <article class="dashboard-indicador indicador-viajes">
+                                <span>Viajes realizados</span>
+                                <strong id="dashboardViajes">0</strong>
+                                <small>Viajes del mes actual</small>
+                            </article>
+
+                        </div>
+
+                        <!-- CLIENTE PRINCIPAL -->
+                        <div class="dashboard-cliente-destacado">
+                            <div>
+                                <span>Cliente con mayor facturación</span>
+                                <strong id="dashboardClientePrincipal">
+                                    Sin información
+                                </strong>
+                            </div>
+
+                            <div class="dashboard-cliente-total">
+                                <span id="dashboardClienteViajes">0 viajes</span>
+                                <strong id="dashboardClienteTotal">$0.00</strong>
+                            </div>
+                        </div>
+
+                        <!-- TABLAS -->
+                        <div class="dashboard-tablas">
+
+                            <article class="dashboard-panel">
+                                <div class="dashboard-panel-header">
+                                    <div>
+                                        <h3>Ingreso y utilidad por unidad</h3>
+                                        <p>Resultado estimado del mes.</p>
+                                    </div>
+                                </div>
+
+                                <div class="dashboard-tabla-contenedor">
+                                    <table class="dashboard-tabla">
+                                        <thead>
+                                            <tr>
+                                                <th>Unidad</th>
+                                                <th>Ingresos</th>
+                                                <th>Gastos</th>
+                                                <th>Utilidad</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody id="tablaRentabilidadUnidades">
+                                            <tr>
+                                                <td colspan="4">
+                                                    Consultando información...
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </article>
+
+                            <article class="dashboard-panel">
+                                <div class="dashboard-panel-header">
+                                    <div>
+                                        <h3>Unidades con más gasto</h3>
+                                        <p>Diésel y mantenimiento del mes.</p>
+                                    </div>
+                                </div>
+
+                                <div id="listaUnidadesMayorGasto"
+                                    class="dashboard-gastos-lista">
+
+                                    <div class="loading">
+                                        Consultando información...
+                                    </div>
+                                </div>
+                            </article>
+
+                        </div>
+                    </div>
+                </section>
+
             </div>
 
             

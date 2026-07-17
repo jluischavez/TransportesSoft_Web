@@ -76,6 +76,7 @@ function mostrarFormLogin() {
     document.getElementById("formCrearEmpresa").style.display = "none";
 
     ocultarMantenimientosInicio();
+    ocultarDashboardInicio();
 }
 
 function inicializarExpiracionIndex() {
@@ -143,6 +144,8 @@ function verificarEmpresa() {
     seccion.style.display = "block";
 
     ocultarMantenimientosInicio();
+    ocultarDashboardInicio();
+
     mostrarModoUnirseEmpresa();
     cargarEmpresas();
 
@@ -167,9 +170,13 @@ function actualizarNav() {
 
     if (empresa) {
         navUsuario.textContent = `${usuario} - ${empresa}`;
+
         cargarMantenimientosInicio();
+        cargarDashboardInicio();
     } else {
         navUsuario.textContent = usuario;
+
+        ocultarDashboardInicio();
     }
 }
 
@@ -364,10 +371,28 @@ function formatearNumeroInicio(valor) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const btnRecargar = document.getElementById("btnRecargarMantenimientosInicio");
+    const btnRecargarMantenimientos =
+        document.getElementById(
+            "btnRecargarMantenimientosInicio"
+        );
 
-    if (btnRecargar) {
-        btnRecargar.addEventListener("click", cargarMantenimientosInicio);
+    const btnRecargarDashboard =
+        document.getElementById(
+            "btnRecargarDashboard"
+        );
+
+    if (btnRecargarMantenimientos) {
+        btnRecargarMantenimientos.addEventListener(
+            "click",
+            cargarMantenimientosInicio
+        );
+    }
+
+    if (btnRecargarDashboard) {
+        btnRecargarDashboard.addEventListener(
+            "click",
+            cargarDashboardInicio
+        );
     }
 });
 
@@ -444,6 +469,417 @@ document.getElementById("btnLogin").addEventListener("click", async () => {
         btnLogin.textContent = "Iniciar sesión";
     }
 });
+
+
+// ── DASHBOARD DE INICIO ───────────────────────────────────────
+async function cargarDashboardInicio() {
+    const panel = document.getElementById("panelDashboardInicio");
+    const mensaje = document.getElementById("mensajeDashboard");
+
+    const token = localStorage.getItem("token");
+    const empresaNombre = localStorage.getItem("empresaNombre");
+
+    if (!panel) return;
+
+    if (!token || !empresaNombre) {
+        ocultarDashboardInicio();
+        return;
+    }
+
+    panel.style.display = "block";
+
+    limpiarDashboardInicio();
+
+    if (mensaje) {
+        mensaje.textContent = "Consultando resumen financiero...";
+    }
+
+    try {
+        const response = await fetch(
+            apiUrl("/Dashboard/resumen-mensual"),
+            {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        if (response.status === 401) {
+            cerrarSesionLocal();
+            mostrarFormLogin();
+            return;
+        }
+
+        if (!response.ok) {
+            const error = await obtenerErrorApi(response);
+
+            throw new Error(
+                error || "No se pudo consultar el dashboard."
+            );
+        }
+
+        const data = await response.json();
+
+        pintarDashboardInicio(data);
+
+        if (mensaje) {
+            mensaje.textContent = "";
+        }
+
+    } catch (error) {
+        console.error("Error al cargar dashboard:", error);
+
+        if (mensaje) {
+            mensaje.textContent =
+                error.message ||
+                "No se pudo cargar el resumen financiero.";
+        }
+
+        pintarTablasDashboardVacias();
+    }
+}
+
+function pintarDashboardInicio(data) {
+    const resumen = data?.resumen ?? {};
+    const periodo = data?.periodo ?? {};
+    const cliente = data?.clienteMayorFacturacion;
+
+    establecerTexto(
+        "dashboardIngresos",
+        formatearMonedaDashboard(resumen.ingresosMes)
+    );
+
+    establecerTexto(
+        "dashboardGastos",
+        formatearMonedaDashboard(resumen.gastosMes)
+    );
+
+    establecerTexto(
+        "dashboardGastoDiesel",
+        formatearMonedaDashboard(resumen.gastosDiesel)
+    );
+
+    establecerTexto(
+        "dashboardGastoMantenimiento",
+        formatearMonedaDashboard(resumen.gastosMantenimiento)
+    );
+
+    establecerTexto(
+        "dashboardUtilidad",
+        formatearMonedaDashboard(resumen.utilidadEstimada)
+    );
+
+    establecerTexto(
+        "dashboardViajes",
+        Number(resumen.viajesRealizados ?? 0)
+            .toLocaleString("es-MX")
+    );
+
+    pintarColorUtilidad(resumen.utilidadEstimada);
+
+    pintarPeriodoDashboard(periodo);
+    pintarClientePrincipalDashboard(cliente);
+
+    pintarRentabilidadUnidades(
+        data?.rentabilidadPorUnidad ?? []
+    );
+
+    pintarUnidadesMayorGasto(
+        data?.unidadesMayorGasto ?? []
+    );
+}
+
+function pintarPeriodoDashboard(periodo) {
+    const titulo = document.getElementById("tituloPeriodoDashboard");
+
+    if (!titulo) return;
+
+    const anio = periodo?.anio;
+    const mes = periodo?.mes;
+
+    if (!anio || !mes) {
+        titulo.textContent = "Dashboard del mes";
+        return;
+    }
+
+    const fecha = new Date(anio, mes - 1, 1);
+
+    const nombrePeriodo = fecha.toLocaleDateString("es-MX", {
+        month: "long",
+        year: "numeric"
+    });
+
+    titulo.textContent =
+        `Dashboard de ${capitalizarTexto(nombrePeriodo)}`;
+}
+
+function pintarClientePrincipalDashboard(cliente) {
+    if (!cliente) {
+        establecerTexto(
+            "dashboardClientePrincipal",
+            "Sin viajes registrados"
+        );
+
+        establecerTexto(
+            "dashboardClienteViajes",
+            "0 viajes"
+        );
+
+        establecerTexto(
+            "dashboardClienteTotal",
+            "$0.00"
+        );
+
+        return;
+    }
+
+    establecerTexto(
+        "dashboardClientePrincipal",
+        cliente.nombreCliente || "Cliente sin nombre"
+    );
+
+    const cantidadViajes = Number(cliente.viajes ?? 0);
+
+    establecerTexto(
+        "dashboardClienteViajes",
+        `${cantidadViajes} ${
+            cantidadViajes === 1 ? "viaje" : "viajes"
+        }`
+    );
+
+    establecerTexto(
+        "dashboardClienteTotal",
+        formatearMonedaDashboard(cliente.totalFacturado)
+    );
+}
+
+function pintarRentabilidadUnidades(unidades) {
+    const tbody = document.getElementById(
+        "tablaRentabilidadUnidades"
+    );
+
+    if (!tbody) return;
+
+    tbody.innerHTML = "";
+
+    if (!Array.isArray(unidades) || unidades.length === 0) {
+        const fila = document.createElement("tr");
+        const celda = document.createElement("td");
+
+        celda.colSpan = 4;
+        celda.className = "dashboard-sin-datos";
+        celda.textContent =
+            "No hay movimientos de unidades durante este mes.";
+
+        fila.appendChild(celda);
+        tbody.appendChild(fila);
+
+        return;
+    }
+
+    unidades.forEach(unidad => {
+        const fila = document.createElement("tr");
+
+        const celdaUnidad = document.createElement("td");
+        const celdaIngreso = document.createElement("td");
+        const celdaGasto = document.createElement("td");
+        const celdaUtilidad = document.createElement("td");
+
+        celdaUnidad.textContent =
+            unidad.unidad ?? `Unidad ${unidad.idUnidad}`;
+
+        celdaIngreso.textContent =
+            formatearMonedaDashboard(unidad.ingreso);
+
+        celdaGasto.textContent =
+            formatearMonedaDashboard(unidad.gastoTotal);
+
+        celdaUtilidad.textContent =
+            formatearMonedaDashboard(unidad.utilidad);
+
+        const utilidad = Number(unidad.utilidad ?? 0);
+
+        celdaUtilidad.className =
+            utilidad >= 0
+                ? "dashboard-utilidad-positiva"
+                : "dashboard-utilidad-negativa";
+
+        fila.appendChild(celdaUnidad);
+        fila.appendChild(celdaIngreso);
+        fila.appendChild(celdaGasto);
+        fila.appendChild(celdaUtilidad);
+
+        tbody.appendChild(fila);
+    });
+}
+
+function pintarUnidadesMayorGasto(unidades) {
+    const lista = document.getElementById(
+        "listaUnidadesMayorGasto"
+    );
+
+    if (!lista) return;
+
+    lista.innerHTML = "";
+
+    if (!Array.isArray(unidades) || unidades.length === 0) {
+        const vacio = document.createElement("div");
+
+        vacio.className = "dashboard-sin-datos";
+        vacio.textContent =
+            "No hay gastos registrados durante este mes.";
+
+        lista.appendChild(vacio);
+        return;
+    }
+
+    unidades.forEach((unidad, indice) => {
+        const item = document.createElement("div");
+        const posicion = document.createElement("span");
+        const informacion = document.createElement("div");
+        const nombre = document.createElement("strong");
+        const detalle = document.createElement("small");
+        const total = document.createElement("b");
+
+        item.className = "dashboard-gasto-item";
+        posicion.className = "dashboard-gasto-posicion";
+        informacion.className = "dashboard-gasto-info";
+        total.className = "dashboard-gasto-total";
+
+        posicion.textContent = indice + 1;
+
+        nombre.textContent =
+            unidad.unidad ?? `Unidad ${unidad.idUnidad}`;
+
+        detalle.textContent =
+            `Diésel: ${formatearMonedaDashboard(unidad.gastoDiesel)}`
+            + ` · Mantenimiento: ${formatearMonedaDashboard(
+                unidad.gastoMantenimiento
+            )}`;
+
+        total.textContent =
+            formatearMonedaDashboard(unidad.gastoTotal);
+
+        informacion.appendChild(nombre);
+        informacion.appendChild(detalle);
+
+        item.appendChild(posicion);
+        item.appendChild(informacion);
+        item.appendChild(total);
+
+        lista.appendChild(item);
+    });
+}
+
+function limpiarDashboardInicio() {
+    establecerTexto("dashboardIngresos", "$0.00");
+    establecerTexto("dashboardGastos", "$0.00");
+    establecerTexto("dashboardGastoDiesel", "$0.00");
+    establecerTexto("dashboardGastoMantenimiento", "$0.00");
+    establecerTexto("dashboardUtilidad", "$0.00");
+    establecerTexto("dashboardViajes", "0");
+
+    establecerTexto(
+        "dashboardClientePrincipal",
+        "Consultando..."
+    );
+
+    establecerTexto("dashboardClienteViajes", "0 viajes");
+    establecerTexto("dashboardClienteTotal", "$0.00");
+
+    pintarTablasDashboardVacias();
+}
+
+function pintarTablasDashboardVacias() {
+    const tbody = document.getElementById(
+        "tablaRentabilidadUnidades"
+    );
+
+    if (tbody) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="4" class="dashboard-sin-datos">
+                    No hay información disponible.
+                </td>
+            </tr>
+        `;
+    }
+
+    const lista = document.getElementById(
+        "listaUnidadesMayorGasto"
+    );
+
+    if (lista) {
+        lista.innerHTML = `
+            <div class="dashboard-sin-datos">
+                No hay información disponible.
+            </div>
+        `;
+    }
+}
+
+function ocultarDashboardInicio() {
+    const panel = document.getElementById(
+        "panelDashboardInicio"
+    );
+
+    const mensaje = document.getElementById(
+        "mensajeDashboard"
+    );
+
+    if (panel) {
+        panel.style.display = "none";
+    }
+
+    if (mensaje) {
+        mensaje.textContent = "";
+    }
+
+    limpiarDashboardInicio();
+}
+
+function formatearMonedaDashboard(valor) {
+    return Number(valor ?? 0).toLocaleString("es-MX", {
+        style: "currency",
+        currency: "MXN",
+        minimumFractionDigits: 2
+    });
+}
+
+function establecerTexto(idElemento, texto) {
+    const elemento = document.getElementById(idElemento);
+
+    if (elemento) {
+        elemento.textContent = texto;
+    }
+}
+
+function pintarColorUtilidad(valor) {
+    const elemento = document.getElementById(
+        "dashboardUtilidad"
+    );
+
+    if (!elemento) return;
+
+    const utilidad = Number(valor ?? 0);
+
+    elemento.classList.remove(
+        "dashboard-utilidad-positiva",
+        "dashboard-utilidad-negativa"
+    );
+
+    elemento.classList.add(
+        utilidad >= 0
+            ? "dashboard-utilidad-positiva"
+            : "dashboard-utilidad-negativa"
+    );
+}
+
+function capitalizarTexto(texto) {
+    if (!texto) return "";
+
+    return texto.charAt(0).toUpperCase() + texto.slice(1);
+}
 
 // mostrar registro
 document.getElementById("btnMostrarRegistro").addEventListener("click", () => {
