@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="img/LogoTS.ico">
+    <link rel="stylesheet" href="CSS/style.css?v=6">
+    <link rel="stylesheet" href="CSS/reportes.css?v=1">
+    <title>TransportesSoft - Reportes</title>
+</head>
+<body>
+    <nav id="navbar" class="ts-navbar" style="display:none">
+        <div id="navUsuario" class="ts-navbar-user"></div>
+
+        <div class="ts-navbar-links" id="navLinks">
+            <a href="index.html" class="nav-link-btn">Inicio</a>
+
+            <div class="nav-dropdown">
+                <button class="nav-link-btn" id="btnContabilidad" type="button">
+                    Contabilidad ▾
+                </button>
+
+                <div class="nav-dropdown-menu" id="menuContabilidad" style="display:none">
+                    <a href="viajes.html" class="nav-dropdown-item">Viajes</a>
+                    <a href="mantenimientos.html" class="nav-dropdown-item">Mantenimientos</a>
+                </div>
+            </div>
+
+            <a href="catalogos.html" class="nav-link-btn">Catálogos</a>
+            <a href="contabilidadUnidades.html" class="nav-link-btn">Contabilidad Unidades</a>
+            <a href="reportes.html" class="nav-link-btn active">Reportes</a>
+        </div>
+
+        <button id="btnLogout" class="btn-logout" type="button">
+            Cerrar sesión
+        </button>
+    </nav>
+
+    <main class="reportes-contenedor">
+        <header class="reportes-encabezado">
+            <div>
+                
+                <div class="reportes-titulo">REPORTES</div>
+                <span class="reportes-kicker">Análisis operativo</span>
+                <p>Consulta la rentabilidad de la operación y genera documentos PDF por periodo.</p>
+            </div>
+        </header>
+
+        <section class="reporte-card">
+            <div class="reporte-card-header">
+                <div>
+                    <span class="reporte-etiqueta">Finanzas</span>
+                    <h2>Rentabilidad operativa</h2>
+                    <p>
+                        Ingresos de viajes menos gastos registrados de diésel y mantenimiento.
+                    </p>
+                </div>
+                <span class="reporte-formato">PDF</span>
+            </div>
+
+            <div class="reporte-filtros-grid">
+                <div class="reporte-campo">
+                    <label for="reporteRentabilidadFechaInicio">Fecha inicial</label>
+                    <input type="date" id="reporteRentabilidadFechaInicio">
+                </div>
+
+                <div class="reporte-campo">
+                    <label for="reporteRentabilidadFechaFin">Fecha final</label>
+                    <input type="date" id="reporteRentabilidadFechaFin">
+                </div>
+
+                <div class="reporte-campo">
+                    <label for="reporteRentabilidadUnidad">Unidad</label>
+                    <select id="reporteRentabilidadUnidad">
+                        <option value="">TODAS LAS UNIDADES</option>
+                    </select>
+                </div>
+
+                <div class="reporte-campo">
+                    <label for="reporteRentabilidadCliente">Cliente</label>
+                    <select id="reporteRentabilidadCliente">
+                        <option value="">TODOS LOS CLIENTES</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="reporte-opciones-gasto">
+                <span>Gastos incluidos:</span>
+
+                <label class="reporte-check">
+                    <input type="checkbox" id="reporteIncluirDiesel" checked>
+                    <span>Diésel</span>
+                </label>
+
+                <label class="reporte-check">
+                    <input type="checkbox" id="reporteIncluirMantenimientos" checked>
+                    <span>Mantenimientos</span>
+                </label>
+            </div>
+
+            <div class="reporte-aviso">
+                Los mantenimientos de unidades y remolques se contabilizan por separado. Al filtrar por unidad o cliente,
+                los gastos se prorratean según la participación en los ingresos de los viajes del periodo.
+            </div>
+
+            <div class="reporte-acciones">
+                <p id="mensajeReporteRentabilidad" class="reporte-mensaje"></p>
+
+                <button id="btnGenerarReporteRentabilidad" class="btn-generar-reporte" type="button">
+                    Generar reporte PDF
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <script src="JS/config.js?v=6"></script>
+    <script src="JS/authGuard.js?v=6"></script>
+    <script src="JS/nav.js?v=6"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+    <script src="JS/Reportes/reportesBase.js?v=2"></script>
+    <script src="JS/Reportes/reporteRentabilidad.js?v=2"></script>
+</body>
+</html>

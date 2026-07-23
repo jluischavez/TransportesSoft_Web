@@ -293,7 +293,7 @@ h1 {
 h1 span.accent { color: var(--accent); }
 
 h1::after {
-  content: 'SISTEMA DE GESTIÓN v0.3';
+  content: 'SISTEMA DE GESTIÓN v0.5';
   display: block;
   font-family: var(--mono);
   font-size: .65rem;
