@@ -1,16 +1,70 @@
-(function crearBotonWhatsApp() {
-    const telefono = "526621816151"; 
-    const mensaje = encodeURIComponent("Hola, tengo una duda sobre TransportesSoft.");
+document.addEventListener("DOMContentLoaded", () => {
+    crearBotonGuia();
+    crearBotonWhatsApp();
+});
 
-    const link = document.createElement("a");
-    link.href = `https://wa.me/${telefono}?text=${mensaje}`;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    link.className = "whatsapp-float";
-    link.innerHTML = `
-        <span class="whatsapp-float-icon">💬</span>
-        <span class="whatsapp-float-text">¿Dudas? envía un whats!</span>
+function crearBotonGuia() {
+    if (document.querySelector(".guia-float")) {
+        return;
+    }
+
+    const botonGuia = document.createElement("a");
+
+    botonGuia.href = "guia.html";
+    botonGuia.className = "guia-float";
+    botonGuia.setAttribute(
+        "aria-label",
+        "Abrir guía de uso de TransportesSoft"
+    );
+
+    botonGuia.innerHTML = `
+        <span
+            class="guia-float-icon"
+            aria-hidden="true"
+        >
+            ▶
+        </span>
+
+        <span class="guia-float-text">
+            ¿Necesitas una guía?
+        </span>
     `;
 
-    document.body.appendChild(link);
-})();
+    document.body.appendChild(botonGuia);
+}
+
+function crearBotonWhatsApp() {
+    if (document.querySelector(".whatsapp-float")) {
+        return;
+    }
+
+    const botonWhatsApp = document.createElement("a");
+
+    botonWhatsApp.href =
+        "https://wa.me/526621816151" +
+        "?text=Hola,%20necesito%20ayuda%20con%20TransportesSoft";
+
+    botonWhatsApp.target = "_blank";
+    botonWhatsApp.rel = "noopener noreferrer";
+    botonWhatsApp.className = "whatsapp-float";
+
+    botonWhatsApp.setAttribute(
+        "aria-label",
+        "Contactar por WhatsApp"
+    );
+
+    botonWhatsApp.innerHTML = `
+        <span
+            class="whatsapp-float-icon"
+            aria-hidden="true"
+        >
+            ☎
+        </span>
+
+        <span class="whatsapp-float-text">
+            WhatsApp
+        </span>
+    `;
+
+    document.body.appendChild(botonWhatsApp);
+}
